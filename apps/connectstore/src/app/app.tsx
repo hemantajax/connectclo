@@ -1,4 +1,8 @@
+import { useGetProductsQuery } from '@connectstore/store';
+
 export function App() {
+  // Test Redux integration by fetching products
+  const { data: products, error, isLoading } = useGetProductsQuery();
   return (
     <div className="min-vh-100">
       {/* Header */}
@@ -25,40 +29,73 @@ export function App() {
           </p>
         </div>
 
-        {/* Test Cards */}
+        {/* Redux Status & Products */}
         <div className="row g-4">
-          <div className="col-md-4">
-            <div className="card card-dark h-100">
+          <div className="col-12">
+            <div className="card card-dark">
               <div className="card-body">
-                <h5 className="card-title text-primary">Test Product 1</h5>
-                <p className="card-text text-muted">
-                  This is a test product card with our custom dark theme.
-                </p>
-                <button className="btn btn-primary-glow">View Details</button>
-              </div>
-            </div>
-          </div>
-          <div className="col-md-4">
-            <div className="card card-dark h-100">
-              <div className="card-body">
-                <h5 className="card-title text-primary">Test Product 2</h5>
-                <p className="card-text text-muted">
-                  Another test product card showcasing the theme.
-                </p>
-                <button className="btn btn-outline-primary-glow">
-                  Add to Cart
-                </button>
-              </div>
-            </div>
-          </div>
-          <div className="col-md-4">
-            <div className="card card-dark h-100">
-              <div className="card-body">
-                <h5 className="card-title text-primary">Test Product 3</h5>
-                <p className="card-text text-muted">
-                  Third test product with beautiful hover effects.
-                </p>
-                <button className="btn btn-primary-glow">Buy Now</button>
+                <h5 className="card-title text-primary">
+                  Redux Integration Status
+                </h5>
+                {isLoading && (
+                  <div className="d-flex align-items-center">
+                    <div
+                      className="spinner-border spinner-border-sm text-primary me-2"
+                      role="status"
+                    >
+                      <span className="visually-hidden">Loading...</span>
+                    </div>
+                    <span className="text-muted">
+                      Loading products from API...
+                    </span>
+                  </div>
+                )}
+                {error && (
+                  <div className="alert alert-danger" role="alert">
+                    <strong>Error:</strong> Failed to fetch products.{' '}
+                    {JSON.stringify(error)}
+                  </div>
+                )}
+                {products && (
+                  <div>
+                    <div className="alert alert-success" role="alert">
+                      <strong>Success!</strong> Redux is working! Fetched{' '}
+                      {products.length} products from API.
+                    </div>
+                    <div className="row g-3">
+                      {products.slice(0, 6).map((product, index) => (
+                        <div key={product.id || index} className="col-md-4">
+                          <div className="card card-dark h-100">
+                            <img
+                              src={product.imageUrl}
+                              className="card-img-top"
+                              alt={product.title}
+                              style={{ height: '200px', objectFit: 'cover' }}
+                            />
+                            <div className="card-body">
+                              <h6 className="card-title text-primary">
+                                {product.title}
+                              </h6>
+                              <p className="card-text text-muted small">
+                                By: {product.userName}
+                              </p>
+                              <div className="d-flex justify-content-between align-items-center">
+                                <span className="badge bg-secondary">
+                                  {product.pricingOption}
+                                </span>
+                                {product.price && (
+                                  <span className="text-success fw-bold">
+                                    ${product.price}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
