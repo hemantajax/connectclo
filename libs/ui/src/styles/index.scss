@@ -1,0 +1,59 @@
+// Main entry point for all styles
+// This file should be imported in your applications
+
+// Import the complete Bootstrap setup
+@use 'bootstrap';
+
+// Disable smooth scrolling globally
+* {
+  scroll-behavior: auto !important;
+}
+
+html {
+  scroll-behavior: auto !important;
+  overflow-x: hidden;
+}
+
+body {
+  scroll-behavior: auto !important;
+  overflow-x: hidden;
+}
+
+// Disable CSS transitions that might cause smooth scrolling
+*,
+*::before,
+*::after {
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+  -o-transition: none !important;
+  transition: none !important;
+  -webkit-transform: none !important;
+  -moz-transform: none !important;
+  -o-transform: none !important;
+  transform: none !important;
+  -webkit-animation: none !important;
+  -moz-animation: none !important;
+  -o-animation: none !important;
+  animation: none !important;
+}
+
+// Force standard scrollbars
+::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+// You can add additional global styles here if needed

@@ -1,10 +1,33 @@
 {
-  "name": "@connectclo/source",
+  "name": "@connectstore/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "dev": "nx dev connectstore",
+    "build": "nx build connectstore",
+    "build:prod": "nx build connectstore --configuration=production",
+    "start": "nx start connectstore",
+    "preview": "nx preview connectstore",
+    "lint": "nx run-many --target=lint --all",
+    "lint:fix": "nx run-many --target=lint --all --fix",
+    "test": "nx run-many --target=test --all",
+    "test:watch": "nx run-many --target=test --all --watch",
+    "test:coverage": "nx run-many --target=test --all --coverage",
+    "e2e": "nx e2e connectstore-e2e",
+    "e2e:open": "nx open-cypress connectstore-e2e",
+    "typecheck": "nx run-many --target=typecheck --all",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "clean": "nx reset",
+    "graph": "nx graph",
+    "affected:build": "nx affected --target=build",
+    "affected:test": "nx affected --target=test",
+    "affected:lint": "nx affected --target=lint",
+    "affected:e2e": "nx affected --target=e2e"
+  },
   "private": true,
   "dependencies": {
+    "bootstrap": "^5.3.8",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-router-dom": "6.29.0"
@@ -58,6 +81,7 @@
     "vitest": "^3.0.0"
   },
   "workspaces": [
-    "apps/*"
+    "apps/*",
+    "libs/*"
   ]
 }

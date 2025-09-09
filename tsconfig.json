@@ -8,6 +8,9 @@
     },
     {
       "path": "./apps/connectstore"
+    },
+    {
+      "path": "./libs/ui"
     }
   ]
 }

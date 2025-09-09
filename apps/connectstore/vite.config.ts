@@ -14,6 +14,14 @@ export default defineConfig(() => ({
     host: 'localhost',
   },
   plugins: [react()],
+  css: {
+    preprocessorOptions: {
+      scss: {
+        quietDeps: true, // Suppress deprecation warnings from dependencies
+        silenceDeprecations: ['import', 'global-builtin', 'color-functions'], // Silence all Bootstrap deprecation warnings
+      },
+    },
+  },
   // Uncomment this if you are using workers.
   // worker: {
   //  plugins: [ nxViteTsPaths() ],

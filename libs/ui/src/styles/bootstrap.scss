@@ -1,0 +1,32 @@
+// Main Bootstrap SCSS file
+// Forward custom variables first to override Bootstrap defaults
+@forward 'variables';
+
+// Import Bootstrap with variables from our variables file
+@use 'variables' as vars;
+@use '../../../../node_modules/bootstrap/scss/bootstrap' with (
+  $primary: vars.$primary,
+  $secondary: vars.$secondary,
+  $success: vars.$success,
+  $info: vars.$info,
+  $warning: vars.$warning,
+  $danger: vars.$danger,
+  $light: vars.$light,
+  $dark: vars.$dark,
+  $font-family-sans-serif: vars.$font-family-sans-serif,
+  $font-size-base: vars.$font-size-base,
+  $line-height-base: vars.$line-height-base,
+  $spacer: vars.$spacer,
+  $spacers: vars.$spacers,
+  $grid-breakpoints: vars.$grid-breakpoints,
+  $container-max-widths: vars.$container-max-widths,
+  $border-radius: vars.$border-radius,
+  $border-radius-sm: vars.$border-radius-sm,
+  $border-radius-lg: vars.$border-radius-lg,
+  $box-shadow-sm: vars.$box-shadow-sm,
+  $box-shadow: vars.$box-shadow,
+  $box-shadow-lg: vars.$box-shadow-lg
+);
+
+// Import custom styles after Bootstrap
+@use 'custom';

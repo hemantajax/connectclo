@@ -31,7 +31,8 @@
           "buildDepsName": "build-deps",
           "watchDepsName": "watch-deps"
         }
-      }
+      },
+      "exclude": ["libs/ui/*"]
     },
     {
       "plugin": "@nx/react/router-plugin",
@@ -77,6 +78,15 @@
       "plugin": "@nx/jest/plugin",
       "options": {
         "targetName": "test"
+      }
+    },
+    {
+      "plugin": "@nx/js/typescript",
+      "include": ["libs/ui/*"],
+      "options": {
+        "typecheck": {
+          "targetName": "typecheck"
+        }
       }
     }
   ],

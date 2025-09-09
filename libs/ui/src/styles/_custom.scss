@@ -1,0 +1,86 @@
+// Custom styles and utilities
+// Add your custom styles here
+@use 'variables' as vars;
+
+// Custom utility classes
+.text-gradient {
+  background: linear-gradient(45deg, vars.$primary, vars.$info);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.shadow-custom {
+  box-shadow: 0 0.5rem 1.5rem rgba(vars.$primary, 0.15);
+}
+
+// Custom component styles
+.card-hover {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: vars.$box-shadow-lg;
+  }
+}
+
+.btn-gradient {
+  background: linear-gradient(
+    45deg,
+    vars.$primary,
+    lighten(vars.$primary, 10%)
+  );
+  border: none;
+  color: white;
+
+  &:hover {
+    background: linear-gradient(
+      45deg,
+      darken(vars.$primary, 5%),
+      vars.$primary
+    );
+    color: white;
+  }
+}
+
+// Layout utilities
+.min-vh-100 {
+  min-height: 100vh;
+}
+
+.sticky-top-custom {
+  position: sticky;
+  top: 1rem;
+  z-index: 1020;
+}
+
+// Animation utilities
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slide-in-left {
+  animation: slideInLeft 0.5s ease-out;
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

@@ -1,0 +1,241 @@
+---
+alwaysApply: true
+---
+## 🎯 Key Architectural Principles (React translation)
+
+- **Domain-Driven Design**: Keep feature libs grouped by domain; apps import features — never vice-versa.
+- **Dependency Boundaries**: Use Nx lint rules to prevent circular imports; enforce `libs/*` public APIs only.
+- **Component Contracts**: Strict prop typing (TypeScript), use `React.FC` sparingly — prefer named functions with explicit generics.
+- **Lazy Loading**: Use `React.lazy()` + `Suspense` or route-level code-splitting (Next.js `dynamic()` or Vite chunking)
+- **Design System**: A single `libs/ui` package with Storybook, tokens, accessiblity rules, and Bootstrap 5 integration
+- **Testing-first**: Each lib contains unit tests (Jest) + Chromatic/Storybook visual tests + Cypress E2E per app
+- **Secure defaults**: Sanitized inputs, CSP headers at the server, JWT validation at API boundary
+
+---
+
+## 🛠 Technology Stack (recommended)
+
+- **Frontend**: React 18+, TypeScript 5+
+- **Styling**: Bootstrap 5 + SCSS design tokens (optionally Tailwind for utility classes)
+- **Build / Monorepo**: Nx + Vite for dev; Next.js for SSR apps if needed
+- **State**:
+
+  - **App-wide**: Redux Toolkit (RTK) with slices + RTK Query for normalized API caching
+  - **Server-state / caching**: TanStack Query (React Query) for optimistic UI & background refetching (optional if you use RTK Query)
+  - **Local UI state**: Zustand or Jotai (small isolated stores)
+
+- **Authentication**: OpenID Connect / OAuth2 + JWT; `libs/auth` provides hooks and higher-order route guards
+- **Testing**: Jest + React Testing Library, Cypress for E2E
+- **Linting / Format**: ESLint, Prettier, Stylelint
+- **CI/CD**: GitHub Actions / GitLab CI with Nx affected commands
+- **LLM / AI integration**: MCP server (Node) + Cursor .mdc files + `realworld-patterns.md`
+
+---
+
+## 🔁 State Management Best Practices (for Cursor AI use-cases)
+
+1. **Separation of concerns**: Network/state caching handled by RTK Query or TanStack Query; business logic in thunks or lightweight effects.
+2. **Entity normalization**: Use `createEntityAdapter` (RTK) to normalize collections for predictable updates.
+3. **Feature-local stores**: Keep features' transient UI state inside component-local hooks or Zustand to keep Redux minimal and fast.
+4. **Selectors & memoization**: Use `createSelector` and `useSelector` for performance; prefer `useMemo` in components for derived data.
+5. **Server-side rendering and hydration**: If using Next.js, make sure to properly hydrate RTK state on server to client. For Cursor-based LLM simulations you may snapshot state via `mcp-server` for testing flows.
+
+---
+
+## ⚛️ Component Patterns & Best Practices
+
+- Prefer functional components + hooks.
+- Keep components small and focused (smart/dumb split). Smart components orchestrate while dumb components are pure visual units in `libs/ui`.
+- Use `forwardRef` and `useImperativeHandle` only when necessary.
+- Type component props precisely; avoid `any`.
+- Isolate side-effects in custom hooks (`useFetchProducts`, `useAuth`) and place shared hooks in `libs/core`.
+
+---
+
+## 🧩 Micro-frontend (MFE) Strategy
+
+- Use **Module Federation** (Webpack 5) or Nx Module Federation plugin to host remotes.
+- Each MFE is an Nx app/package that exposes a stable public API surface (index exports) and a remoteEntry file.
+- Provide a **shared state adapter** for shell <-> remote communication: small event bus or `postMessage` adapter, or a shared Redux store with strict versioning and serialization.
+- Use SRI (Subresource Integrity) and strict CSP policies for remote scripts.
+
+---
+
+## 🔐 Authentication & Authorization
+
+- Central `libs/auth` provides:
+
+  - `AuthProvider` context
+  - `useAuth()` hook
+  - `RequireAuth` route wrapper for client-side guard
+  - Token storage adapter (localStorage or cookie httpOnly via backend)
+
+- Use short-lived access tokens + refresh token rotation. Follow OAuth2 best practices.
+- RBAC: store role claims in a typed `User` interface and enforce in both UI and backend guards.
+
+---
+
+## 🔬 LLM / AI Integration — Cursor & MCP Ready
+
+This repo includes files and patterns tuned for Cursor AI and MCP (Model Context Protocol) integration.
+
+### Files to include (docs/ and top-level)
+
+- `docs/realworld-patterns.md` — Universal patterns (a trimmed React version of your original `realworld-patterns.md`).
+- `docs/CURSOR-SETUP.md` — Cursor-specific setup and `.mdc` generation instructions.
+- `docs/LLM-INTEGRATION.md` — How to wire LLMs, security patterns, and example prompts.
+- `tools/mcp-server/` — Minimal Node-based MCP server that can validate patterns, run local prompt transformations, and provide a WebSocket endpoint for Cursor or other IDEs.
+
+### Cursor-specific items
+
+- `react-20.mdc` — Cursor rules for React project generation (components naming, state rules, folder conventions)
+- `realworld-patterns.mdc` — The canonical single-file reference for Cursor prompts
+- `mcp-context.json` — Optional static JSON payload for older MCP clients
+
+### MCP Server (tools/mcp-server)
+
+Minimal responsibilities:
+
+- Serve pattern files to Cursor IDE and local LLM agents
+- Validate generated code against eslint/prettier rules
+- Run test harness (Jest) on generated components and return pass/fail
+- Provide code transforms (formatting, adding imports)
+
+**Startup**:
+
+```bash
+cd tools/mcp-server
+npm install
+npm run build
+npm start
+```
+
+Expose a small REST + WebSocket API for IDEs to request snippets, validate, and run tests.
+
+---
+
+## 📦 Example Nx Workspace Commands
+
+```bash
+# Create workspace
+npx create-nx-workspace@latest enterprise-react --preset=empty --packageManager=npm
+cd enterprise-react
+# Add React & Vite / Next plugins
+npm install -D @nx/react @nx/vite @nx/next
+# Generate libs & apps
+nx g @nx/react:app admin --style=scss --bundler=vite
+nx g @nx/react:library ui --style=scss --publishable --buildable
+nx g @nx/js:library utils
+```
+
+Use `nx affected:test` and `nx affected:build` in CI to speed up runs.
+
+---
+
+## 🧪 Testing Strategy
+
+- Unit tests: Jest + React Testing Library per lib
+- Visual regression: Storybook + Chromatic (or Playwright snapshot comparisons)
+- E2E: Cypress per app with seeded mock backends
+- LLM test harness: `tools/mcp-server` runs a synthetic user flow using mocked LLM prompts to validate generated UI behaviour
+
+---
+
+## 🔒 Security Checklist
+
+- Use CSP headers; avoid `unsafe-inline` where possible
+- Sanitize user inputs through libs/utils sanitizers
+- Validate tokens server-side and implement refresh token rotation
+- Audit npm dependencies in CI (npm audit + Snyk)
+
+---
+
+## 📈 Performance
+
+- Use code-splitting and lazy loading extensively
+- Tree-shakeable libs: export from single entrypoints
+- Keep Redux state minimal; favor RTK Query for cache
+- Use web vitals monitoring (Lighthouse CI or Datadog RUM)
+
+---
+
+## ⚙️ CI/CD Example (GitHub Actions outline)
+
+- Lint & format
+- Run `nx affected:test` for changed libs
+- Run Storybook build for UI changes
+- Run `nx affected:build` for impacted apps
+- Deploy artifacts (static host or container) only for affected apps
+
+---
+
+## 📋 Cursor & LLM Usage Guidance (practical)
+
+1. **Single source-of-truth**: Keep `docs/realworld-patterns.md` synced — this is what Cursor will pull into prompts.
+2. **.mdc files**: Create small focused `.mdc` files per domain (e.g., `react-ui.mdc`, `react-state.mdc`) then include the master `realworld-patterns.mdc` in Cursor settings.
+3. **Prompt templates**: Keep templates in `docs/prompts/` for prompting LLMs to generate code consistent with your conventions (component names, testing, accessibility checks).
+4. **Validation step**: Always run generated code through `tools/mcp-server` to quickly run ESLint/Jest and return results to the developer or CI.
+
+---
+
+## 📁 Recommended Reference Files to Add (names & purposes)
+
+- `docs/realworld-patterns.md` — Master patterns for React + Nx
+- `docs/CURSOR-SETUP.md` — How to configure Cursor (include .mdc snippets)
+- `docs/LLM-INTEGRATION.md` — Secure LLM usage patterns and examples
+- `docs/react-best-practices.md` — The React translation of `angular-best-practices.md`
+- `tools/mcp-server/README.md` — How to run and extend the MCP server
+
+---
+
+## ✅ Checklist to Convert from Angular to React (practical steps)
+
+1. Review `realworld-patterns.md` and replace Angular-specific directives with React patterns (hooks, effects, props)
+2. Scaffold `libs/ui` as a Storybook-first library
+3. Implement `libs/state` using RTK + RTK Query
+4. Provide `libs/auth` with `AuthProvider` & `useAuth` hooks
+5. Add `tools/mcp-server` and export the `realworld-patterns.mdc` for Cursor
+6. Add CI steps to run `tools/mcp-server` validation on PRs
+
+---
+
+## 🔁 Example: `useAuth` Hook (starter)
+
+```ts
+// libs/auth/src/useAuth.ts
+import { useEffect, useState, useContext, createContext } from 'react';
+import type { User } from 'libs/types';
+
+const AuthContext = createContext(null as any);
+
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const [user, setUser] = useState<User | null>(null);
+  useEffect(() => {
+    // hydrate from cookie/localStorage or call /me
+  }, []);
+  return (
+    <AuthContext.Provider value={{ user, setUser }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+export const useAuth = () => {
+  const ctx = useContext(AuthContext);
+  if (!ctx) throw new Error('useAuth must be used within AuthProvider');
+  return ctx;
+};
+```
+
+---
+
+## 🧾 Licensing & Contribution
+
+- Keep patterns permissive (MIT) for internal sharing across teams.
+- Encourage PRs for updating Cursor `.mdc` files and `realworld-patterns.md` when you discover better patterns.
+
+---
+
+## 📌 Final Notes
+
+This document is intentionally framework-agnostic where possible while providing concrete React recommendations. It mirrors the Angular enterprise spec and includes Cursor + MCP operational files to make the monorepo LLM-friendly.
