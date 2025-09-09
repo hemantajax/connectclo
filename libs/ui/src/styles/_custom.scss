@@ -75,6 +75,20 @@ body {
   background: vars.$navbar-dark-bg;
   backdrop-filter: blur(15px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+  // Bootstrap fixed navbar enhancements
+  &.fixed-top {
+    z-index: 1030; // Bootstrap's fixed navbar z-index
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+}
+
+// Fixed header utility - add top padding to prevent content overlap
+.fixed-header-padding {
+  padding-top: 88px; // Approximate height of navbar (py-3 + logo height + padding)
 }
 
 // Layout utilities

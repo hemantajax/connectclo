@@ -7,7 +7,7 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({ className = '' }) => {
   return (
     <nav
-      className={`navbar navbar-dark navbar-dark-custom navbar-expand-lg py-3 ${className}`}
+      className={`navbar navbar-dark navbar-dark-custom navbar-expand-lg py-3 fixed-top ${className}`}
     >
       <div className="container-fluid px-4">
         {/* Logo/Brand */}
