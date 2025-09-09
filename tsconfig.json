@@ -11,6 +11,15 @@
     },
     {
       "path": "./libs/ui"
+    },
+    {
+      "path": "./libs/shared"
+    },
+    {
+      "path": "./libs/store"
+    },
+    {
+      "path": "./libs/components"
     }
   ]
 }
