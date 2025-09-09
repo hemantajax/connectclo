@@ -4,7 +4,7 @@ import { Product, PricingOption } from '../types/product.types';
  * Format price for display
  */
 export const formatPrice = (
-  price: number | undefined,
+  price: number,
   pricingOption: PricingOption
 ): string => {
   if (pricingOption === PricingOption.FREE) {
@@ -15,7 +15,7 @@ export const formatPrice = (
     return 'View Only';
   }
 
-  if (pricingOption === PricingOption.PAID && price !== undefined) {
+  if (pricingOption === PricingOption.PAID) {
     return `$${price.toFixed(2)}`;
   }
 
@@ -42,11 +42,7 @@ export const getPricingOptionLabel = (option: PricingOption): string => {
  * Check if product has a valid price
  */
 export const hasValidPrice = (product: Product): boolean => {
-  return (
-    product.pricingOption === PricingOption.PAID &&
-    product.price !== undefined &&
-    product.price > 0
-  );
+  return product.pricingOption === PricingOption.PAID && product.price > 0;
 };
 
 /**
@@ -71,9 +67,9 @@ export const isValidProduct = (product: any): product is Product => {
     typeof product === 'object' &&
     product !== null &&
     typeof product.title === 'string' &&
-    typeof product.userName === 'string' &&
+    typeof product.creator === 'string' &&
     Object.values(PricingOption).includes(product.pricingOption) &&
-    typeof product.imageUrl === 'string'
+    typeof product.imagePath === 'string'
   );
 };
 
@@ -81,8 +77,17 @@ export const isValidProduct = (product: any): product is Product => {
  * Transform API response to Product array
  */
 export const transformApiResponse = (apiData: any[]): Product[] => {
-  return apiData.filter(isValidProduct).map((item, index) => ({
-    ...item,
-    id: item.id || `product-${index}`, // Ensure each product has an ID
-  }));
+  return apiData
+    .map((item, index) => ({
+      id: item.id || `product-${index}`,
+      title: item.title || 'Untitled',
+      creator: item.creator || 'Unknown',
+      pricingOption: item.pricingOption as PricingOption, // Convert number to enum
+      price: item.price || 0,
+      imagePath: item.imagePath || '',
+      description: item.description,
+      createdAt: item.createdAt,
+      updatedAt: item.updatedAt,
+    }))
+    .filter(isValidProduct);
 };

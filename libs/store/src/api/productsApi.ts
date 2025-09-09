@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import {
   Product,
+  ApiProduct,
   API_ENDPOINTS,
   CACHE_CONFIG,
   transformApiResponse,
@@ -18,7 +19,8 @@ export const productsApi = createApi({
   endpoints: (builder) => ({
     getProducts: builder.query<Product[], void>({
       query: () => '',
-      transformResponse: (response: any[]) => transformApiResponse(response),
+      transformResponse: (response: ApiProduct[]) =>
+        transformApiResponse(response),
       providesTags: ['Product'],
       keepUnusedDataFor: CACHE_CONFIG.PRODUCTS.KEEP_UNUSED_DATA_FOR,
     }),

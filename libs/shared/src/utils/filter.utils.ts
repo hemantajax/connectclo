@@ -23,7 +23,7 @@ export const filterProducts = (
     filtered = filtered.filter(
       (product) =>
         product.title.toLowerCase().includes(query) ||
-        product.userName.toLowerCase().includes(query)
+        product.creator.toLowerCase().includes(query)
     );
   }
 
@@ -31,7 +31,6 @@ export const filterProducts = (
   if (filters.priceRange.min > 0 || filters.priceRange.max < 999) {
     filtered = filtered.filter((product) => {
       if (product.pricingOption !== PricingOption.PAID) return true;
-      if (product.price === undefined) return false;
       return (
         product.price >= filters.priceRange.min &&
         product.price <= filters.priceRange.max
@@ -52,23 +51,20 @@ export const sortProducts = (
   const sorted = [...products];
 
   switch (sortBy) {
+    case SortOption.RELEVANCE:
+      return sorted; // Keep original order for relevance
+
     case SortOption.ITEM_NAME:
       return sorted.sort((a, b) => a.title.localeCompare(b.title));
 
     case SortOption.HIGHER_PRICE:
       return sorted.sort((a, b) => {
-        // Handle items without prices (FREE, VIEW_ONLY)
-        const priceA = a.price ?? 0;
-        const priceB = b.price ?? 0;
-        return priceB - priceA; // Descending order
+        return b.price - a.price; // Descending order
       });
 
     case SortOption.LOWER_PRICE:
       return sorted.sort((a, b) => {
-        // Handle items without prices (FREE, VIEW_ONLY)
-        const priceA = a.price ?? 0;
-        const priceB = b.price ?? 0;
-        return priceA - priceB; // Ascending order
+        return a.price - b.price; // Ascending order
       });
 
     default:
@@ -85,7 +81,7 @@ export const hasActiveFilters = (filters: FilterState): boolean => {
     filters.searchQuery.trim().length > 0 ||
     filters.priceRange.min > 0 ||
     filters.priceRange.max < 999 ||
-    filters.sortBy !== SortOption.ITEM_NAME
+    filters.sortBy !== SortOption.RELEVANCE
   );
 };
 
@@ -95,7 +91,7 @@ export const hasActiveFilters = (filters: FilterState): boolean => {
 export const getDefaultFilterState = (): FilterState => ({
   pricingOptions: [],
   searchQuery: '',
-  sortBy: SortOption.ITEM_NAME,
+  sortBy: SortOption.RELEVANCE,
   priceRange: { min: 0, max: 999 },
   isActive: false,
 });
