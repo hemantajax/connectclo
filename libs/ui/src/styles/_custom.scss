@@ -1,46 +1,80 @@
-// Custom styles and utilities
+// Custom styles and utilities - Connect CLO Theme
 // Add your custom styles here
 @use 'variables' as vars;
 
+// Global dark theme styles
+body {
+  background: vars.$body-bg;
+  color: vars.$body-color;
+}
+
 // Custom utility classes
 .text-gradient {
-  background: linear-gradient(45deg, vars.$primary, vars.$info);
+  background: vars.$accent-gradient;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  font-weight: vars.$font-weight-semibold;
+}
+
+.text-primary-glow {
+  color: vars.$primary;
+  text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
 }
 
 .shadow-custom {
   box-shadow: 0 0.5rem 1.5rem rgba(vars.$primary, 0.15);
 }
 
-// Custom component styles
-.card-hover {
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+// Custom component styles - Connect CLO Theme
+.card-dark {
+  background: vars.$card-bg;
+  border: 1px solid vars.$card-border-color;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: vars.$box-shadow-lg;
+    transform: translateY(-4px);
+    box-shadow: 0 1rem 2rem rgba(0, 212, 255, 0.15);
+    border-color: rgba(0, 212, 255, 0.3);
   }
 }
 
-.btn-gradient {
-  background: linear-gradient(
-    45deg,
-    vars.$primary,
-    lighten(vars.$primary, 10%)
-  );
+.btn-primary-glow {
+  background: vars.$accent-gradient;
   border: none;
   color: white;
+  font-weight: vars.$font-weight-medium;
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+  transition: all 0.3s ease;
 
   &:hover {
-    background: linear-gradient(
-      45deg,
-      darken(vars.$primary, 5%),
-      vars.$primary
-    );
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
     color: white;
   }
+}
+
+.btn-outline-primary-glow {
+  border: 2px solid vars.$primary;
+  color: vars.$primary;
+  background: transparent;
+  font-weight: vars.$font-weight-medium;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: vars.$primary;
+    color: vars.$dark;
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+    transform: translateY(-1px);
+  }
+}
+
+// Navbar styles
+.navbar-dark-custom {
+  background: vars.$navbar-dark-bg;
+  backdrop-filter: blur(15px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 // Layout utilities
