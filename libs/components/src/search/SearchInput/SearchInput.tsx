@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useDebounce } from '@connectstore/shared';
 
 interface SearchInputProps {
@@ -18,6 +18,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
 }) => {
   const [localValue, setLocalValue] = useState(value);
   const [isFocused, setIsFocused] = useState(false);
+  const isClearing = useRef(false);
   const debouncedValue = useDebounce(localValue, debounceMs);
 
   // Update local value when prop value changes
@@ -27,13 +28,21 @@ export const SearchInput: React.FC<SearchInputProps> = ({
 
   // Call onChange when debounced value changes
   useEffect(() => {
+    // Skip debounced update if we're in the middle of a clear action
+    if (isClearing.current) {
+      isClearing.current = false;
+      return;
+    }
+
     if (debouncedValue !== value) {
       onChange(debouncedValue);
     }
   }, [debouncedValue, onChange, value]);
 
   const handleClear = () => {
+    isClearing.current = true;
     setLocalValue('');
+    // Call onChange immediately to bypass debounce for clear action
     onChange('');
   };
 
@@ -56,9 +65,9 @@ export const SearchInput: React.FC<SearchInputProps> = ({
         } ${className}`}
         placeholder={placeholder}
         value={localValue}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setLocalValue(e.target.value)
-        }
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+          setLocalValue(e.currentTarget.value);
+        }}
         style={{
           paddingLeft: '48px',
           paddingRight: localValue ? '48px' : '16px',
