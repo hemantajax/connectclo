@@ -1,5 +1,4 @@
 import { FilterState } from './filter.types';
-import { Product } from './product.types';
 
 /**
  * UI state interface for loading, errors, and pagination
@@ -14,9 +13,9 @@ export interface UIState {
 }
 
 /**
- * Root state interface for the Redux store
+ * Base root state interface for the Redux store
  */
-export interface RootState {
+export interface BaseRootState {
   filters: FilterState;
   ui: UIState;
   // RTK Query API slices will be added automatically
@@ -26,7 +25,7 @@ export interface RootState {
  * Thunk API configuration
  */
 export interface ThunkConfig {
-  state: RootState;
+  state: BaseRootState;
   rejectValue: string;
 }
 
