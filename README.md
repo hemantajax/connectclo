@@ -1,82 +1,220 @@
-# Connectclo
+# ConnectStore - E-Commerce Product Catalog
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+A modern, high-performance e-commerce product catalog built with React, TypeScript, and Nx monorepo architecture. Features advanced filtering, virtual scrolling, and seamless state management.
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is almost ready ✨.
+## 🚀 Tech Stack
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/getting-started/tutorials/react-monorepo-tutorial?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+### Core Technologies
 
-## Finish your CI setup
+- **React 19** - Latest React with concurrent features
+- **TypeScript 5.9** - Type-safe development
+- **Nx 21.5** - Modern monorepo tooling and build system
+- **Vite 7** - Lightning-fast development and bundling
+- **Node.js** - JavaScript runtime
 
-[Click here to finish setting up your workspace!](https://cloud.nx.app/connect/oVuLs4P4UF)
+### State Management & Data
 
+- **Redux Toolkit (RTK) 2.9** - Predictable state management
+- **React Redux 9.2** - React bindings for Redux
+- **React Router DOM 6.29** - Client-side routing with URL sync
 
-## Run tasks
+### UI & Styling
 
-To run the dev server for your app, use:
+- **Bootstrap 5.3** - Responsive design system
+- **Sass** - Enhanced CSS with variables and mixins
+- **CSS Modules** - Scoped component styling
 
-```sh
-npx nx serve connectstore
+### Performance & Optimization
+
+- **@tanstack/react-virtual 3.13** - Virtual scrolling for large lists
+- **SWC** - Fast TypeScript/JavaScript compiler
+- **Code Splitting** - Lazy loading and bundle optimization
+
+### Testing & Quality
+
+- **Jest 30** - Unit testing framework
+- **React Testing Library 16** - Component testing utilities
+- **Cypress 14** - End-to-end testing
+- **ESLint 9** - Code linting and formatting
+- **Prettier 2.6** - Code formatting
+- **TypeScript ESLint** - TypeScript-specific linting rules
+
+### Development Tools
+
+- **Nx Console** - IDE extension for Nx
+- **Babel** - JavaScript transpilation
+- **Verdaccio** - Local npm registry for testing
+
+### Deployment & CI/CD
+
+- **Vercel** - Production deployment platform
+- **GitHub Actions Ready** - CI/CD pipeline support
+- **Nx Cloud** - Distributed builds and caching
+
+## 📦 Project Structure
+
+```
+connectclo/
+├── apps/
+│   ├── connectstore/           # Main React application
+│   └── connectstore-e2e/       # E2E test suite
+├── libs/
+│   ├── components/             # Reusable UI components
+│   ├── shared/                 # Shared utilities, types, hooks
+│   ├── store/                  # Redux store and state management
+│   └── ui/                     # Design system and styles
+└── tools/                      # Build and development tools
 ```
 
-To create a production bundle:
+## 🛠 Available Scripts
 
-```sh
-npx nx build connectstore
+### Development
+
+```bash
+npm run dev              # Start development server
+npm start               # Alias for development server
+npm run preview         # Preview production build locally
 ```
 
-To see all available targets to run for a project, run:
+### Building & Deployment
 
-```sh
-npx nx show project connectstore
+```bash
+npm run build           # Build for production
+npm run build:prod      # Build with production configuration
 ```
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+### Testing
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Add new projects
-
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
-
-Use the plugin's generator to create new projects.
-
-To generate a new application, use:
-
-```sh
-npx nx g @nx/react:app demo
+```bash
+npm test               # Run all unit tests
+npm run test:watch     # Run tests in watch mode
+npm run test:coverage  # Generate test coverage reports
+npm run e2e            # Run end-to-end tests
+npm run e2e:open       # Open Cypress test runner
 ```
 
-To generate a new library, use:
+### Code Quality
 
-```sh
-npx nx g @nx/react:lib mylib
+```bash
+npm run lint           # Lint all projects
+npm run lint:fix       # Fix linting issues automatically
+npm run typecheck      # Type check all projects
+npm run format         # Format code with Prettier
+npm run format:check   # Check code formatting
 ```
 
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
+### Nx Utilities
 
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+```bash
+npm run graph          # Visualize project dependencies
+npm run clean          # Reset Nx cache
+npm run affected:build # Build only affected projects
+npm run affected:test  # Test only affected projects
+npm run affected:lint  # Lint only affected projects
+npm run affected:e2e   # E2E test only affected projects
+```
 
+## ✨ Features
 
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+### 🏪 Product Catalog
 
-## Install Nx Console
+- **Dynamic Product Grid** - Responsive grid layout with Bootstrap
+- **Product Cards** - Rich product display with images, pricing, and metadata
+- **Virtual Scrolling** - High-performance rendering of large product lists
+- **Lazy Loading** - Optimized loading for better performance
 
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
+### 🔍 Advanced Search & Filtering
 
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+- **Real-time Search** - Instant search with debounced input
+- **Multi-criteria Filtering**:
+  - Pricing options (Free, Paid, View Only)
+  - Price range slider (₹0 - ₹999)
+  - Sort options (Name, Price High to Low, Price Low to High)
+- **Filter State Persistence** - Maintains filters across page reloads
+- **URL Synchronization** - Shareable URLs with filter state
 
-## Useful links
+### 🎛 State Management
 
-Learn more:
+- **Redux Toolkit Integration** - Modern Redux with slices and RTK Query
+- **Centralized Store** - Unified state management across components
+- **Optimized Selectors** - Memoized state selection for performance
+- **Type-safe Actions** - Fully typed Redux actions and state
 
-- [Learn more about this workspace setup](https://nx.dev/getting-started/tutorials/react-monorepo-tutorial?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+### 🔗 URL State Synchronization
 
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+- **Deep Linking** - Bookmark and share specific filter combinations
+- **Browser Navigation** - Proper back/forward button support
+- **Query Parameter Mapping**:
+  - `q` - Search query
+  - `pricing` - Selected pricing options
+  - `sort` - Sort preference
+  - `minPrice`, `maxPrice` - Price range
+
+### 📱 Responsive Design
+
+- **Mobile-First** - Optimized for all screen sizes
+- **Bootstrap Grid** - Flexible layout system
+- **Touch-Friendly** - Mobile gesture support
+- **Accessibility** - WCAG compliance and screen reader support
+
+### 🎯 Performance Optimizations
+
+- **Virtual Scrolling** - Smooth handling of thousands of products
+- **Code Splitting** - Lazy-loaded components and routes
+- **Bundle Optimization** - Minimal bundle size with tree shaking
+- **Caching Strategies** - Efficient data caching and updates
+
+### 🧪 Testing Coverage
+
+- **Unit Tests** - Component and utility function testing
+- **Integration Tests** - Feature workflow testing
+- **E2E Tests** - Complete user journey validation
+- **Visual Regression** - UI consistency testing
+
+### 🏗 Architecture Features
+
+- **Monorepo Structure** - Organized, scalable codebase
+- **Component Library** - Reusable, documented components
+- **Type Safety** - Comprehensive TypeScript coverage
+- **Modular Design** - Clean separation of concerns
+- **Plugin Architecture** - Extensible Nx workspace
+
+## 🚀 Getting Started
+
+1. **Clone the repository**
+
+   ```bash
+   git clone https://github.com/yourusername/connectclo.git
+   cd connectclo
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   npm install
+   ```
+
+3. **Start development server**
+
+   ```bash
+   npm run dev
+   ```
+
+4. **Open your browser**
+   Navigate to `http://localhost:4200`
+
+## 🔮 Coming Soon
+
+### 🎨 UnCSS Integration
+
+- **Automatic CSS Purging** - Remove unused CSS automatically
+- **Bundle Size Optimization** - Smaller CSS bundles for faster loading
+- **Build Pipeline Integration** - Seamless integration with existing build process
+
+### 📱 Progressive Web App (PWA)
+
+- **Offline Support** - Browse products without internet connection
+- **App-like Experience** - Native app feel in the browser
+- **Push Notifications** - Product updates and promotions
+- **Install Prompt** - Add to home screen functionality
+- **Service Worker** - Advanced caching and background sync
