@@ -6,7 +6,7 @@ export default defineConfig(() => ({
   root: __dirname,
   cacheDir: '../../node_modules/.vite/apps/connectstore',
   server: {
-    port: 4200,
+    port: 3000,
     host: 'localhost',
   },
   preview: {
