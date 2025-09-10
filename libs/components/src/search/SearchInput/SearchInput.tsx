@@ -70,6 +70,9 @@ export const SearchInput: React.FC<SearchInputProps> = ({
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
           setLocalValue(e.currentTarget.value);
         }}
+        aria-label="Search products"
+        aria-describedby={localValue ? 'search-clear' : undefined}
+        role="searchbox"
         style={{
           paddingLeft: '48px',
           paddingRight: localValue ? '48px' : '16px',
@@ -93,6 +96,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
           className="btn position-absolute border-0 bg-transparent text-light opacity-75"
           onClick={handleClear}
           aria-label="Clear search"
+          id="search-clear"
           style={{
             right: '12px',
             top: '50%',

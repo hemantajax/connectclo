@@ -17,26 +17,39 @@ export function App() {
   return (
     <>
       <PerformanceMonitor />
+
+      {/* Skip Navigation Link */}
+      <a href="#main-content" className="skip-link">
+        Skip to main content
+      </a>
+
       <Header />
 
       <div className="min-vh-100 bg-dark fixed-header-padding">
         {/* Search Section */}
-        <SearchSection />
+        <section aria-label="Search and filters">
+          <SearchSection />
 
-        {/* Contents Filter Info Banner - Full Width */}
-        <div className="container-fluid px-4 pb-3">
-          <ContentsFilter variant="info-only" />
-        </div>
+          {/* Contents Filter Info Banner - Full Width */}
+          <div className="container-fluid px-4 pb-3">
+            <ContentsFilter variant="info-only" />
+          </div>
+        </section>
 
         {/* Main Content Container */}
-        <div className="container-fluid px-4 py-3">
+        <main
+          id="main-content"
+          className="container-fluid px-4 py-3"
+          role="main"
+        >
+          <h1 className="sr-only">Product Catalog</h1>
           {/* Contents List Section */}
           <div className="row">
             <div className="col-12">
               <ProductsContainer />
             </div>
           </div>
-        </div>
+        </main>
       </div>
 
       {/* PWA Update Prompt */}

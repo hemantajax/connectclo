@@ -54,10 +54,31 @@ body {
   color: #ffffff;
 }
 
-// Focus outline for accessibility
+// Focus outline for accessibility - Enhanced visibility
 *:focus {
-  outline: 2px solid rgba(0, 212, 255, 0.5);
+  outline: 2px solid rgba(0, 212, 255, 0.8);
   outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(0, 212, 255, 0.2);
+}
+
+// Specific focus styles for form elements
+input:focus,
+select:focus,
+textarea:focus,
+button:focus,
+.btn:focus {
+  outline: 2px solid rgba(0, 212, 255, 0.8);
+  outline-offset: 1px;
+  box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.25);
+  border-color: rgba(0, 212, 255, 0.8) !important;
+}
+
+// High contrast focus for checkboxes and radio buttons
+input[type='checkbox']:focus,
+input[type='radio']:focus {
+  outline: 2px solid rgba(0, 212, 255, 1);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(0, 212, 255, 0.3);
 }
 
 // Smooth transitions for interactive elements

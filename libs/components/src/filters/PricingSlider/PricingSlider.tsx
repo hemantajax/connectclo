@@ -77,7 +77,12 @@ export const PriceInput: React.FC<PriceInputProps> = ({ className = '' }) => {
           {/* Manual Input Fields */}
           <div className="row g-2">
             <div className="col-6">
-              <label className="form-label text-light small">Min Price</label>
+              <label
+                className="form-label text-light small"
+                htmlFor="min-price-input"
+              >
+                Min Price
+              </label>
               <div className="input-group input-group-sm">
                 <span className="input-group-text bg-dark border-secondary text-light">
                   $
@@ -91,11 +96,18 @@ export const PriceInput: React.FC<PriceInputProps> = ({ className = '' }) => {
                   onChange={handleMinInputChange}
                   disabled={!isPaidSelected}
                   placeholder="0"
+                  aria-label="Minimum price"
+                  id="min-price-input"
                 />
               </div>
             </div>
             <div className="col-6">
-              <label className="form-label text-light small">Max Price</label>
+              <label
+                className="form-label text-light small"
+                htmlFor="max-price-input"
+              >
+                Max Price
+              </label>
               <div className="input-group input-group-sm">
                 <span className="input-group-text bg-dark border-secondary text-light">
                   $
@@ -109,6 +121,8 @@ export const PriceInput: React.FC<PriceInputProps> = ({ className = '' }) => {
                   onChange={handleMaxInputChange}
                   disabled={!isPaidSelected}
                   placeholder="999"
+                  aria-label="Maximum price"
+                  id="max-price-input"
                 />
               </div>
             </div>

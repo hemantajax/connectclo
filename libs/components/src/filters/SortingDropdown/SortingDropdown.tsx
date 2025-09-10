@@ -32,14 +32,19 @@ export const SortingDropdown: React.FC<SortingDropdownProps> = ({
   };
 
   if (variant === 'inline') {
+    const selectId = 'inline-sort-dropdown';
     return (
       <div className={`d-flex align-items-center ${className}`}>
-        <span className="text-light small me-2">Sort by</span>
+        <label htmlFor={selectId} className="text-light small me-2">
+          Sort by
+        </label>
         <select
+          id={selectId}
           className="form-select form-select-sm bg-dark border-secondary text-light"
           value={currentSort}
           onChange={handleSortChange}
           style={{ width: 'auto', minWidth: '120px' }}
+          aria-label="Sort products by"
         >
           {SORT_OPTIONS.map((option) => (
             <option
@@ -64,11 +69,18 @@ export const SortingDropdown: React.FC<SortingDropdownProps> = ({
         </h6>
 
         <div className="mb-3">
-          <label className="form-label text-light small">Sort by</label>
+          <label
+            htmlFor="sort-dropdown"
+            className="form-label text-light small"
+          >
+            Sort by
+          </label>
           <select
+            id="sort-dropdown"
             className="form-select bg-dark border-secondary text-light"
             value={currentSort}
             onChange={handleSortChange}
+            aria-describedby="sort-help"
           >
             {SORT_OPTIONS.map((option) => (
               <option
@@ -82,7 +94,7 @@ export const SortingDropdown: React.FC<SortingDropdownProps> = ({
           </select>
         </div>
 
-        <div className="d-flex align-items-center">
+        <div className="d-flex align-items-center" id="sort-help">
           <i className="bi bi-info-circle text-muted me-2"></i>
           <small className="text-muted">
             Currently sorting by: {getCurrentSortLabel()}

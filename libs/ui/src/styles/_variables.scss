@@ -79,12 +79,22 @@ $box-shadow-lg: 0 1rem 3rem rgba(0, 0, 0, 0.5);
 // Component specific variables
 $navbar-dark-bg: rgba(10, 10, 10, 0.95);
 $card-bg: rgba(26, 26, 26, 0.8);
-$card-border-color: rgba(255, 255, 255, 0.1);
+$card-border-color: rgba(
+  255,
+  255,
+  255,
+  0.15
+); // Improved from 0.1 to 0.15 for better contrast
 $btn-border-radius: $border-radius;
 $input-bg: rgba(42, 42, 42, 0.8);
-$input-border-color: rgba(255, 255, 255, 0.2);
+$input-border-color: rgba(
+  255,
+  255,
+  255,
+  0.25
+); // Improved from 0.2 to 0.25 for better contrast
 $input-focus-border-color: $primary;
 
 // Custom accent colors
 $accent-gradient: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
-$text-muted: rgba(255, 255, 255, 0.6);
+$text-muted: rgba(255, 255, 255, 0.75); // Improved contrast from 0.6 to 0.75

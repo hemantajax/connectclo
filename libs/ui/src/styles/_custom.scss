@@ -147,3 +147,66 @@ body {
     transform: translateX(0);
   }
 }
+
+// Accessibility utilities
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.skip-link {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+
+  &:focus {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    width: auto;
+    height: auto;
+    background: vars.$primary;
+    color: vars.$dark;
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    z-index: 9999;
+    font-weight: bold;
+  }
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+  .card-dark {
+    border-color: rgba(255, 255, 255, 0.4);
+  }
+
+  .text-muted {
+    color: rgba(255, 255, 255, 0.9) !important;
+  }
+
+  .form-control {
+    border-color: rgba(255, 255, 255, 0.4) !important;
+  }
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
