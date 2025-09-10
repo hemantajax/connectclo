@@ -26,7 +26,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
     setLocalValue(value);
   }, [value]);
 
-  // Call onChange when debounced value changes
+  // Call onChange when debounced value changes due to user input (not prop updates)
   useEffect(() => {
     // Skip debounced update if we're in the middle of a clear action
     if (isClearing.current) {
@@ -34,10 +34,12 @@ export const SearchInput: React.FC<SearchInputProps> = ({
       return;
     }
 
-    if (debouncedValue !== value) {
+    // Only propagate when the debounced value reflects the local input state
+    // and differs from the external value (prevents echoing prop changes back)
+    if (debouncedValue === localValue && debouncedValue !== value) {
       onChange(debouncedValue);
     }
-  }, [debouncedValue, onChange, value]);
+  }, [debouncedValue, localValue, onChange, value]);
 
   const handleClear = () => {
     isClearing.current = true;

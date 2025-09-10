@@ -2,11 +2,12 @@ import {
   Header,
   SearchSection,
   ContentsFilter,
-  PricingSlider,
   ProductsContainer,
 } from '@connectstore/components';
+import { useFiltersUrlSync } from './hooks/useFiltersUrlSync';
 
 export function App() {
+  useFiltersUrlSync();
   return (
     <>
       <Header />

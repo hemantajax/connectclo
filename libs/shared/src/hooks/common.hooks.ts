@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { debounce } from '../utils/filter.utils';
 
 /**
  * Hook for debounced value

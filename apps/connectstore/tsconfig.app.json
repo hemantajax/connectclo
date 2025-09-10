@@ -35,6 +35,9 @@
       "path": "../../libs/store/tsconfig.lib.json"
     },
     {
+      "path": "../../libs/shared/tsconfig.lib.json"
+    },
+    {
       "path": "../../libs/components/tsconfig.lib.json"
     }
   ]
