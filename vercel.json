@@ -1,0 +1,6 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "apps/connectstore/dist",
+  "framework": null,
+  "installCommand": "npm install"
+}

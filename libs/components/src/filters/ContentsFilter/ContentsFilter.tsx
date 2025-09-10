@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useAppDispatch, useAppSelector } from '@connectstore/shared';
 import {
   PricingOption,
   getPricingOptionLabel,
   FILTER_CONSTANTS,
-  clamp,
+  // clamp,
 } from '@connectstore/shared';
 import {
   togglePricingOption,
   resetFilters,
   selectPricingOptions,
   selectIsFiltersActive,
-  setPriceRange,
-  selectPriceRange,
+  // setPriceRange,
+  // selectPriceRange,
 } from '@connectstore/store';
 
 interface ContentsFilterProps {
@@ -27,16 +27,16 @@ export const ContentsFilter: React.FC<ContentsFilterProps> = ({
   const dispatch = useAppDispatch();
   const selectedOptions = useAppSelector(selectPricingOptions);
   const hasActiveFilters = useAppSelector(selectIsFiltersActive);
-  const priceRange = useAppSelector(selectPriceRange);
+  // const priceRange = useAppSelector(selectPriceRange);
 
-  const [localRange, setLocalRange] = useState(priceRange);
+  // const [localRange, setLocalRange] = useState(priceRange);
 
   // Check if Paid option is selected to enable/disable slider
-  const isPaidSelected = selectedOptions.includes(PricingOption.PAID);
+  // const isPaidSelected = selectedOptions.includes(PricingOption.PAID);
 
-  useEffect(() => {
-    setLocalRange(priceRange);
-  }, [priceRange]);
+  // useEffect(() => {
+  //   setLocalRange(priceRange);
+  // }, [priceRange]);
 
   const handleOptionToggle = (option: PricingOption) => {
     dispatch(togglePricingOption(option));
@@ -46,27 +46,27 @@ export const ContentsFilter: React.FC<ContentsFilterProps> = ({
     dispatch(resetFilters());
   };
 
-  const handleMinChange = (value: number) => {
-    const clampedValue = clamp(
-      value,
-      FILTER_CONSTANTS.PRICE_RANGE.MIN,
-      localRange.max
-    );
-    const newRange = { ...localRange, min: clampedValue };
-    setLocalRange(newRange);
-    dispatch(setPriceRange(newRange));
-  };
+  // const handleMinChange = (value: number) => {
+  //   const clampedValue = clamp(
+  //     value,
+  //     FILTER_CONSTANTS.PRICE_RANGE.MIN,
+  //     localRange.max
+  //   );
+  //   const newRange = { ...localRange, min: clampedValue };
+  //   setLocalRange(newRange);
+  //   dispatch(setPriceRange(newRange));
+  // };
 
-  const handleMaxChange = (value: number) => {
-    const clampedValue = clamp(
-      value,
-      localRange.min,
-      FILTER_CONSTANTS.PRICE_RANGE.MAX
-    );
-    const newRange = { ...localRange, max: clampedValue };
-    setLocalRange(newRange);
-    dispatch(setPriceRange(newRange));
-  };
+  // const handleMaxChange = (value: number) => {
+  //   const clampedValue = clamp(
+  //     value,
+  //     localRange.min,
+  //     FILTER_CONSTANTS.PRICE_RANGE.MAX
+  //   );
+  //   const newRange = { ...localRange, max: clampedValue };
+  //   setLocalRange(newRange);
+  //   dispatch(setPriceRange(newRange));
+  // };
 
   if (variant === 'info-only') {
     return (
@@ -98,46 +98,6 @@ export const ContentsFilter: React.FC<ContentsFilterProps> = ({
                   </div>
                 );
               })}
-            </div>
-
-            {/* Inline Pricing Slider */}
-            <div
-              className={`d-flex align-items-center ms-5 ${
-                !isPaidSelected ? 'opacity-50' : ''
-              }`}
-            >
-              <span className="text-light small me-3">${localRange.min}</span>
-              <div className="position-relative me-3 inline-dual-range">
-                <input
-                  type="range"
-                  className="form-range range-min"
-                  min={FILTER_CONSTANTS.PRICE_RANGE.MIN}
-                  max={FILTER_CONSTANTS.PRICE_RANGE.MAX}
-                  step={FILTER_CONSTANTS.PRICE_RANGE.STEP}
-                  value={localRange.min}
-                  onChange={(e) =>
-                    handleMinChange(
-                      parseInt((e.target as HTMLInputElement).value)
-                    )
-                  }
-                  disabled={!isPaidSelected}
-                />
-                <input
-                  type="range"
-                  className="form-range range-max"
-                  min={FILTER_CONSTANTS.PRICE_RANGE.MIN}
-                  max={FILTER_CONSTANTS.PRICE_RANGE.MAX}
-                  step={FILTER_CONSTANTS.PRICE_RANGE.STEP}
-                  value={localRange.max}
-                  onChange={(e) =>
-                    handleMaxChange(
-                      parseInt((e.target as HTMLInputElement).value)
-                    )
-                  }
-                  disabled={!isPaidSelected}
-                />
-              </div>
-              <span className="text-light small">${localRange.max}</span>
             </div>
           </div>
           {hasActiveFilters && (

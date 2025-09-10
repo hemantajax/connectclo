@@ -1,38 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@connectstore/shared';
-import {
-  PricingOption,
-  PriceRange,
-  FILTER_CONSTANTS,
-  clamp,
-} from '@connectstore/shared';
+import { PricingOption, FILTER_CONSTANTS, clamp } from '@connectstore/shared';
 import {
   setPriceRange,
   selectPriceRange,
   selectPricingOptions,
 } from '@connectstore/store';
 
-interface PricingSliderProps {
+interface PriceInputProps {
   className?: string;
 }
 
-export const PricingSlider: React.FC<PricingSliderProps> = ({
-  className = '',
-}) => {
+export const PriceInput: React.FC<PriceInputProps> = ({ className = '' }) => {
   const dispatch = useAppDispatch();
   const priceRange = useAppSelector(selectPriceRange);
   const selectedPricingOptions = useAppSelector(selectPricingOptions);
 
   const [localRange, setLocalRange] = useState(priceRange);
 
-  // Check if Paid option is selected to enable/disable slider
+  // Check if Paid option is selected to enable price filtering
   const isPaidSelected = selectedPricingOptions.includes(PricingOption.PAID);
 
   useEffect(() => {
     setLocalRange(priceRange);
   }, [priceRange]);
 
-  const handleMinChange = (value: number) => {
+  const handleMinInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.target.value) || 0;
     const clampedValue = clamp(
       value,
       FILTER_CONSTANTS.PRICE_RANGE.MIN,
@@ -43,7 +37,8 @@ export const PricingSlider: React.FC<PricingSliderProps> = ({
     dispatch(setPriceRange(newRange));
   };
 
-  const handleMaxChange = (value: number) => {
+  const handleMaxInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.target.value) || FILTER_CONSTANTS.PRICE_RANGE.MAX;
     const clampedValue = clamp(
       value,
       localRange.min,
@@ -54,22 +49,12 @@ export const PricingSlider: React.FC<PricingSliderProps> = ({
     dispatch(setPriceRange(newRange));
   };
 
-  const handleMinInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(e.target.value) || 0;
-    handleMinChange(value);
-  };
-
-  const handleMaxInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(e.target.value) || FILTER_CONSTANTS.PRICE_RANGE.MAX;
-    handleMaxChange(value);
-  };
-
   return (
     <div className={`card card-dark ${className}`}>
       <div className="card-body">
         <h6 className="card-title text-primary mb-3">
           <i className="bi bi-currency-dollar me-2"></i>
-          Pricing Slider
+          Price Range
         </h6>
 
         {!isPaidSelected && (
@@ -84,35 +69,9 @@ export const PricingSlider: React.FC<PricingSliderProps> = ({
         <div className={`${!isPaidSelected ? 'opacity-50' : ''}`}>
           {/* Price Range Display */}
           <div className="d-flex justify-content-between align-items-center mb-3">
-            <span className="text-light small">${localRange.min}</span>
+            <span className="text-primary fw-bold">${localRange.min}</span>
             <span className="text-muted small">to</span>
-            <span className="text-light small">${localRange.max}</span>
-          </div>
-
-          {/* Range Sliders */}
-          <div className="position-relative mb-3">
-            <input
-              type="range"
-              className="form-range"
-              min={FILTER_CONSTANTS.PRICE_RANGE.MIN}
-              max={FILTER_CONSTANTS.PRICE_RANGE.MAX}
-              step={FILTER_CONSTANTS.PRICE_RANGE.STEP}
-              value={localRange.min}
-              onChange={(e) => handleMinChange(parseInt(e.target.value))}
-              disabled={!isPaidSelected}
-              style={{ position: 'absolute', zIndex: 1 }}
-            />
-            <input
-              type="range"
-              className="form-range"
-              min={FILTER_CONSTANTS.PRICE_RANGE.MIN}
-              max={FILTER_CONSTANTS.PRICE_RANGE.MAX}
-              step={FILTER_CONSTANTS.PRICE_RANGE.STEP}
-              value={localRange.max}
-              onChange={(e) => handleMaxChange(parseInt(e.target.value))}
-              disabled={!isPaidSelected}
-              style={{ position: 'absolute', zIndex: 2 }}
-            />
+            <span className="text-primary fw-bold">${localRange.max}</span>
           </div>
 
           {/* Manual Input Fields */}
@@ -131,6 +90,7 @@ export const PricingSlider: React.FC<PricingSliderProps> = ({
                   value={localRange.min}
                   onChange={handleMinInputChange}
                   disabled={!isPaidSelected}
+                  placeholder="0"
                 />
               </div>
             </div>
@@ -148,14 +108,28 @@ export const PricingSlider: React.FC<PricingSliderProps> = ({
                   value={localRange.max}
                   onChange={handleMaxInputChange}
                   disabled={!isPaidSelected}
+                  placeholder="999"
                 />
               </div>
             </div>
           </div>
+
+          {/* Active filtering indicator */}
+          {isPaidSelected && (localRange.min > 0 || localRange.max < 999) && (
+            <div className="mt-3 text-center">
+              <small className="text-muted">
+                <i className="bi bi-funnel me-1"></i>
+                Filtering products ${localRange.min} - ${localRange.max}
+              </small>
+            </div>
+          )}
         </div>
       </div>
     </div>
   );
 };
 
-export default PricingSlider;
+export default PriceInput;
+
+// Keep old export name for backward compatibility
+export { PriceInput as PricingSlider };

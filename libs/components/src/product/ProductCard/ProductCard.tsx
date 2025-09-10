@@ -1,5 +1,5 @@
 import React from 'react';
-import { Product, formatPrice, getProductKey } from '@connectstore/shared';
+import { Product, formatPrice } from '@connectstore/shared';
 
 interface ProductCardProps {
   product: Product;
