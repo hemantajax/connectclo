@@ -1,6 +1,6 @@
 import React from 'react';
 import { Product, formatPrice } from '@connectstore/shared';
-import { OptimizedImage } from '../../common/OptimizedImage/OptimizedImage';
+import { LazyImage } from '../../common/LazyImage/LazyImage';
 
 interface ProductCardProps {
   product: Product;
@@ -19,7 +19,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     <div className={`card card-dark h-100 product-card ${className}`}>
       {/* Product Image */}
       <div className="position-relative overflow-hidden">
-        <OptimizedImage
+        <LazyImage
           src={product.imagePath}
           alt={product.title}
           width={300}
@@ -32,6 +32,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           }}
           priority={priority}
           sizes="(max-width: 576px) 100vw, (max-width: 768px) 50vw, (max-width: 992px) 50vw, (max-width: 1200px) 33vw, 25vw"
+          rootMargin="100px" // Start loading when within 100px of viewport
+          threshold={0.1}
         />
 
         {/* Pricing Badge */}

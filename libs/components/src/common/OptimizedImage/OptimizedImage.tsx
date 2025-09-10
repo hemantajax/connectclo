@@ -8,7 +8,7 @@ export interface OptimizedImageProps {
   className?: string;
   style?: React.CSSProperties;
   loading?: 'lazy' | 'eager';
-  priority?: boolean; // For above-the-fold images
+  priority?: boolean; // For above-the-fold images - overrides lazy loading
   sizes?: string;
   onLoad?: () => void;
   onError?: () => void;
@@ -40,11 +40,15 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
     onError?.();
   }, [onError]);
 
-  // Generate WebP and AVIF versions if the original is not already optimized
+  // Generate WebP and AVIF versions only for local images
   const generateOptimizedSources = (originalSrc: string) => {
+    const isExternalUrl =
+      originalSrc.startsWith('http://') || originalSrc.startsWith('https://');
     const isAlreadyOptimized =
       originalSrc.includes('.webp') || originalSrc.includes('.avif');
-    if (isAlreadyOptimized) return null;
+
+    // Skip optimization for external URLs or already optimized images
+    if (isExternalUrl || isAlreadyOptimized) return null;
 
     const basePath = originalSrc.replace(/\.[^/.]+$/, '');
     return [
@@ -55,9 +59,14 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
 
   const optimizedSources = generateOptimizedSources(src);
 
-  // Generate responsive srcSet for different screen densities
+  // Generate responsive srcSet for different screen densities (only for local images)
   const generateSrcSet = (originalSrc: string) => {
     if (!sizes) return undefined;
+
+    const isExternalUrl =
+      originalSrc.startsWith('http://') || originalSrc.startsWith('https://');
+    // Skip srcSet generation for external URLs as we don't have multiple sizes
+    if (isExternalUrl) return undefined;
 
     const basePath = originalSrc.replace(/\.[^/.]+$/, '');
     const extension = originalSrc.split('.').pop();
@@ -101,12 +110,14 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
         height={height}
         className={className}
         style={style}
-        loading={priority ? 'eager' : loading}
+        loading={priority ? 'eager' : 'lazy'}
         decoding="async"
         srcSet={srcSet}
         sizes={sizes}
         onLoad={handleLoad}
         onError={handleError}
+        // Add crossorigin for external images to handle CORS properly
+        crossOrigin="anonymous"
         // Add fetchpriority for above-the-fold images
         {...(priority && { fetchPriority: 'high' as 'high' | 'low' | 'auto' })}
       />

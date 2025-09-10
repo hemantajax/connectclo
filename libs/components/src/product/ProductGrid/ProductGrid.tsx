@@ -30,6 +30,17 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
     return 4; // xl: col-xl-3 (4 columns)
   }, [width]);
 
+  // Calculate how many items should be prioritized (above the fold)
+  // Generally first 1-2 rows depending on screen size
+  const priorityItemsCount = useMemo(() => {
+    // On mobile (1 column): first 2 items
+    if (itemsPerRow === 1) return 2;
+    // On tablet (2 columns): first row (2 items)
+    if (itemsPerRow === 2) return 2;
+    // On desktop (3-4 columns): first row
+    return itemsPerRow;
+  }, [itemsPerRow]);
+
   // Calculate estimated row height based on columns
   const estimatedRowHeight = useMemo(() => {
     // More columns = shorter rows, fewer columns = taller rows
@@ -129,7 +140,9 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
                 >
                   <ProductCard
                     product={product}
-                    priority={virtualRow.index === 0 && colIndex < 6} // First row, first 6 items
+                    priority={
+                      virtualRow.index === 0 && colIndex < priorityItemsCount
+                    }
                   />
                 </div>
               ))}
@@ -155,7 +168,7 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
               >
                 <ProductCard
                   product={product}
-                  priority={index < 6} // First 6 products for LCP optimization
+                  priority={index < priorityItemsCount} // Above-the-fold products for LCP optimization
                 />
               </div>
             ))}
