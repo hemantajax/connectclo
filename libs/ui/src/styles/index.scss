@@ -4,8 +4,8 @@
 // Import the complete Bootstrap setup with custom theme
 @use 'bootstrap';
 
-// Import Google Fonts for Inter font family
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+// Google Fonts will be loaded via preload in HTML head for better performance
+// @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 // Import Bootstrap Icons for icon support (local package)
 @import 'bootstrap-icons/font/bootstrap-icons.css';

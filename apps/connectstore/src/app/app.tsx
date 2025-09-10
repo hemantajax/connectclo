@@ -4,6 +4,7 @@ import {
   ContentsFilter,
   ProductsContainer,
   PWAUpdatePrompt,
+  PerformanceMonitor,
 } from '@connectstore/components';
 import { useFiltersUrlSync } from './hooks/useFiltersUrlSync';
 import { usePWAUpdate } from './hooks/usePWAUpdate';
@@ -15,6 +16,7 @@ export function App() {
 
   return (
     <>
+      <PerformanceMonitor />
       <Header />
 
       <div className="min-vh-100 bg-dark fixed-header-padding">

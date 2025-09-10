@@ -127,7 +127,10 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
                   )}
                   className={getGridClasses()}
                 >
-                  <ProductCard product={product} />
+                  <ProductCard
+                    product={product}
+                    priority={virtualRow.index === 0 && colIndex < 6} // First row, first 6 items
+                  />
                 </div>
               ))}
             </div>
@@ -150,7 +153,10 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
                 key={getProductKey(product, index)}
                 className={getGridClasses()}
               >
-                <ProductCard product={product} />
+                <ProductCard
+                  product={product}
+                  priority={index < 6} // First 6 products for LCP optimization
+                />
               </div>
             ))}
       </div>

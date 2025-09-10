@@ -1,14 +1,17 @@
 import React from 'react';
 import { Product, formatPrice } from '@connectstore/shared';
+import { OptimizedImage } from '../../common/OptimizedImage/OptimizedImage';
 
 interface ProductCardProps {
   product: Product;
   className?: string;
+  priority?: boolean; // For above-the-fold images to optimize LCP
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({
   product,
   className = '',
+  priority = false,
 }) => {
   const displayPrice = formatPrice(product.price, product.pricingOption);
 
@@ -16,16 +19,19 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     <div className={`card card-dark h-100 product-card ${className}`}>
       {/* Product Image */}
       <div className="position-relative overflow-hidden">
-        <img
+        <OptimizedImage
           src={product.imagePath}
-          className="card-img-top"
           alt={product.title}
+          width={300}
+          height={200}
+          className="card-img-top"
           style={{
             height: '200px',
             objectFit: 'cover',
             transition: 'transform 0.3s ease',
           }}
-          loading="lazy"
+          priority={priority}
+          sizes="(max-width: 576px) 100vw, (max-width: 768px) 50vw, (max-width: 992px) 50vw, (max-width: 1200px) 33vw, 25vw"
         />
 
         {/* Pricing Badge */}
