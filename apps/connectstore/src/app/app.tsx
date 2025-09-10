@@ -3,11 +3,16 @@ import {
   SearchSection,
   ContentsFilter,
   ProductsContainer,
+  PWAUpdatePrompt,
 } from '@connectstore/components';
 import { useFiltersUrlSync } from './hooks/useFiltersUrlSync';
+import { usePWAUpdate } from './hooks/usePWAUpdate';
 
 export function App() {
   useFiltersUrlSync();
+  const { needRefresh, offlineReady, updateServiceWorker, close } =
+    usePWAUpdate();
+
   return (
     <>
       <Header />
@@ -31,6 +36,14 @@ export function App() {
           </div>
         </div>
       </div>
+
+      {/* PWA Update Prompt */}
+      <PWAUpdatePrompt
+        needRefresh={needRefresh}
+        offlineReady={offlineReady}
+        updateServiceWorker={updateServiceWorker}
+        close={close}
+      />
     </>
   );
 }
