@@ -90,7 +90,7 @@ export const useFiltersUrlSync = () => {
     }
 
     // Sort option (only if not default)
-    if (filters.sortBy !== SortOption.RELEVANCE) {
+    if (filters.sortBy !== SortOption.ITEM_NAME) {
       next.set('sort', filters.sortBy);
     } else {
       next.delete('sort');

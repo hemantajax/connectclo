@@ -51,9 +51,6 @@ export const sortProducts = (
   const sorted = [...products];
 
   switch (sortBy) {
-    case SortOption.RELEVANCE:
-      return sorted; // Keep original order for relevance
-
     case SortOption.ITEM_NAME:
       return sorted.sort((a, b) => a.title.localeCompare(b.title));
 
@@ -68,7 +65,8 @@ export const sortProducts = (
       });
 
     default:
-      return sorted;
+      // Default to ITEM_NAME sorting if invalid option
+      return sorted.sort((a, b) => a.title.localeCompare(b.title));
   }
 };
 
@@ -81,7 +79,7 @@ export const hasActiveFilters = (filters: FilterState): boolean => {
     filters.searchQuery.trim().length > 0 ||
     filters.priceRange.min > 0 ||
     filters.priceRange.max < 999 ||
-    filters.sortBy !== SortOption.RELEVANCE
+    filters.sortBy !== SortOption.ITEM_NAME
   );
 };
 
@@ -91,7 +89,7 @@ export const hasActiveFilters = (filters: FilterState): boolean => {
 export const getDefaultFilterState = (): FilterState => ({
   pricingOptions: [],
   searchQuery: '',
-  sortBy: SortOption.RELEVANCE,
+  sortBy: SortOption.ITEM_NAME,
   priceRange: { min: 0, max: 999 },
   isActive: false,
 });

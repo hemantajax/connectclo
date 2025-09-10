@@ -39,8 +39,7 @@ export interface ApiProduct {
  * Sort options for products
  */
 export enum SortOption {
-  RELEVANCE = 'RELEVANCE', // Default
-  ITEM_NAME = 'ITEM_NAME',
+  ITEM_NAME = 'ITEM_NAME', // Default
   HIGHER_PRICE = 'HIGHER_PRICE',
   LOWER_PRICE = 'LOWER_PRICE',
 }

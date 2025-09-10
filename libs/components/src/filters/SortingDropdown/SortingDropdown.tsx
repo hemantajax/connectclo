@@ -9,7 +9,6 @@ interface SortingDropdownProps {
 }
 
 const SORT_OPTIONS = [
-  { value: SortOption.RELEVANCE, label: 'Relevance' },
   { value: SortOption.ITEM_NAME, label: 'Item Name' },
   { value: SortOption.HIGHER_PRICE, label: 'Higher Price' },
   { value: SortOption.LOWER_PRICE, label: 'Lower Price' },
@@ -29,7 +28,7 @@ export const SortingDropdown: React.FC<SortingDropdownProps> = ({
 
   const getCurrentSortLabel = () => {
     const option = SORT_OPTIONS.find((opt) => opt.value === currentSort);
-    return option?.label || 'Relevance';
+    return option?.label || 'Item Name';
   };
 
   if (variant === 'inline') {
