@@ -203,13 +203,13 @@ npm run affected:e2e   # E2E test only affected projects
 4. **Open your browser**
    Navigate to `http://localhost:4200`
 
-## 🔮 Coming Soon
-
 ### 🎨 UnCSS Integration
 
 - **Automatic CSS Purging** - Remove unused CSS automatically
 - **Bundle Size Optimization** - Smaller CSS bundles for faster loading
 - **Build Pipeline Integration** - Seamless integration with existing build process
+
+## 🔮 Coming Soon
 
 ### 📱 Progressive Web App (PWA)
 
