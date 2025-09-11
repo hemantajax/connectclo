@@ -74,7 +74,7 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
   const renderLoadingSkeleton = () => (
     <>
       {Array.from({ length: 8 }).map((_, index) => (
-        <div key={`skeleton-${index}`} className={`${getGridClasses()} mb-4`}>
+        <div key={`skeleton-${index}`} className={getGridClasses()}>
           <div className="card card-dark h-100">
             <div
               className="bg-secondary rounded-top"
