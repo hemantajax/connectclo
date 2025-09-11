@@ -12,6 +12,8 @@ const SORT_OPTIONS = [
   { value: SortOption.ITEM_NAME, label: 'Item Name' },
   { value: SortOption.HIGHER_PRICE, label: 'Higher Price' },
   { value: SortOption.LOWER_PRICE, label: 'Lower Price' },
+  { value: SortOption.HIGHEST_RATED, label: 'Highest Rated' },
+  { value: SortOption.MOST_REVIEWS, label: 'Most Reviews' },
 ];
 
 export const SortingDropdown: React.FC<SortingDropdownProps> = ({

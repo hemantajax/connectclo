@@ -1,4 +1,4 @@
-import { Product, PricingOption } from '../types/product.types';
+import { Product, PricingOption, ApiProduct } from '../types/product.types';
 
 /**
  * Format price for display
@@ -9,10 +9,6 @@ export const formatPrice = (
 ): string => {
   if (pricingOption === PricingOption.FREE) {
     return 'FREE';
-  }
-
-  if (pricingOption === PricingOption.VIEW_ONLY) {
-    return 'View Only';
   }
 
   if (pricingOption === PricingOption.PAID) {
@@ -31,8 +27,6 @@ export const getPricingOptionLabel = (option: PricingOption): string => {
       return 'Paid';
     case PricingOption.FREE:
       return 'Free';
-    case PricingOption.VIEW_ONLY:
-      return 'View Only';
     default:
       return 'Unknown';
   }
@@ -69,25 +63,27 @@ export const isValidProduct = (product: any): product is Product => {
     typeof product.title === 'string' &&
     typeof product.creator === 'string' &&
     Object.values(PricingOption).includes(product.pricingOption) &&
-    typeof product.imagePath === 'string'
+    typeof product.imagePath === 'string' &&
+    typeof product.description === 'string' &&
+    typeof product.category === 'string'
   );
 };
 
 /**
- * Transform API response to Product array
+ * Transform Fake Store API response to Product array
  */
-export const transformApiResponse = (apiData: any[]): Product[] => {
+export const transformApiResponse = (apiData: ApiProduct[]): Product[] => {
   return apiData
     .map((item, index) => ({
-      id: item.id || `product-${index}`,
+      id: item.id?.toString() || `product-${index}`,
       title: item.title || 'Untitled',
-      creator: item.creator || 'Unknown',
-      pricingOption: item.pricingOption as PricingOption, // Convert number to enum
+      creator: item.category || 'Unknown Category', // Use category as creator
+      pricingOption: item.price > 0 ? PricingOption.PAID : PricingOption.FREE, // Determine pricing based on price
       price: item.price || 0,
-      imagePath: item.imagePath || '',
-      description: item.description,
-      createdAt: item.createdAt,
-      updatedAt: item.updatedAt,
+      imagePath: item.image || '',
+      description: item.description || '',
+      category: item.category || '',
+      rating: item.rating || { rate: 0, count: 0 },
     }))
     .filter(isValidProduct);
 };

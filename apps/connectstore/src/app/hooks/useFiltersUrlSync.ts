@@ -1,21 +1,23 @@
 import { useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@connectstore/shared';
-import { PricingOption, SortOption } from '@connectstore/shared';
+import { SortOption } from '@connectstore/shared';
 import {
   selectAllFilters,
   setSearchQuery,
-  setPricingOptions,
   setSortBy,
   setPriceRange,
+  setCategories,
+  setMinRating,
 } from '@connectstore/store';
 
 /**
  * Synchronize all Redux filter state with URL query parameters.
  * - q: search query
- * - pricing: comma-separated pricing options (0,1,2)
+ * - categories: comma-separated category names
  * - sort: sort option
  * - minPrice, maxPrice: price range
+ * - minRating: minimum rating filter
  */
 export const useFiltersUrlSync = () => {
   const dispatch = useAppDispatch();
@@ -34,15 +36,23 @@ export const useFiltersUrlSync = () => {
       dispatch(setSearchQuery(urlQuery));
     }
 
-    // Read pricing options
-    const pricingParam = urlParams.get('pricing');
-    if (pricingParam) {
-      const pricingOptions = pricingParam
+    // Read categories
+    const categoriesParam = urlParams.get('categories');
+    if (categoriesParam) {
+      const categories = categoriesParam
         .split(',')
-        .map((p) => parseInt(p.trim(), 10))
-        .filter((p) => Object.values(PricingOption).includes(p));
-      if (pricingOptions.length > 0) {
-        dispatch(setPricingOptions(pricingOptions));
+        .map((c) => decodeURIComponent(c.trim()));
+      if (categories.length > 0) {
+        dispatch(setCategories(categories));
+      }
+    }
+
+    // Read minimum rating
+    const minRatingParam = urlParams.get('minRating');
+    if (minRatingParam) {
+      const rating = parseFloat(minRatingParam);
+      if (!isNaN(rating) && rating >= 0 && rating <= 5) {
+        dispatch(setMinRating(rating));
       }
     }
 
@@ -62,7 +72,7 @@ export const useFiltersUrlSync = () => {
       dispatch(
         setPriceRange({
           min: minPrice ? parseInt(minPrice, 10) : 0,
-          max: maxPrice ? parseInt(maxPrice, 10) : 999,
+          max: maxPrice ? parseInt(maxPrice, 10) : 1000,
         })
       );
     }
@@ -82,11 +92,21 @@ export const useFiltersUrlSync = () => {
       next.delete('q');
     }
 
-    // Pricing options
-    if (filters.pricingOptions.length > 0) {
-      next.set('pricing', filters.pricingOptions.join(','));
+    // Categories
+    if (filters.categories.length > 0) {
+      next.set(
+        'categories',
+        filters.categories.map((c) => encodeURIComponent(c)).join(',')
+      );
     } else {
-      next.delete('pricing');
+      next.delete('categories');
+    }
+
+    // Minimum rating
+    if (filters.minRating > 0) {
+      next.set('minRating', filters.minRating.toString());
+    } else {
+      next.delete('minRating');
     }
 
     // Sort option (only if not default)
@@ -97,13 +117,13 @@ export const useFiltersUrlSync = () => {
     }
 
     // Price range (only if not default)
-    if (filters.priceRange.min > 0 || filters.priceRange.max < 999) {
+    if (filters.priceRange.min > 0 || filters.priceRange.max < 1000) {
       if (filters.priceRange.min > 0) {
         next.set('minPrice', filters.priceRange.min.toString());
       } else {
         next.delete('minPrice');
       }
-      if (filters.priceRange.max < 999) {
+      if (filters.priceRange.max < 1000) {
         next.set('maxPrice', filters.priceRange.max.toString());
       } else {
         next.delete('maxPrice');

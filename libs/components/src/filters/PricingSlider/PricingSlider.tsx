@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@connectstore/shared';
-import { PricingOption, FILTER_CONSTANTS, clamp } from '@connectstore/shared';
-import {
-  setPriceRange,
-  selectPriceRange,
-  selectPricingOptions,
-} from '@connectstore/store';
+import { FILTER_CONSTANTS, clamp } from '@connectstore/shared';
+import { setPriceRange, selectPriceRange } from '@connectstore/store';
 
 interface PriceInputProps {
   className?: string;
@@ -14,12 +10,8 @@ interface PriceInputProps {
 export const PriceInput: React.FC<PriceInputProps> = ({ className = '' }) => {
   const dispatch = useAppDispatch();
   const priceRange = useAppSelector(selectPriceRange);
-  const selectedPricingOptions = useAppSelector(selectPricingOptions);
 
   const [localRange, setLocalRange] = useState(priceRange);
-
-  // Check if Paid option is selected to enable price filtering
-  const isPaidSelected = selectedPricingOptions.includes(PricingOption.PAID);
 
   useEffect(() => {
     setLocalRange(priceRange);
@@ -57,16 +49,7 @@ export const PriceInput: React.FC<PriceInputProps> = ({ className = '' }) => {
           Price Range
         </h6>
 
-        {!isPaidSelected && (
-          <div className="alert alert-info alert-sm" role="alert">
-            <small>
-              <i className="bi bi-info-circle me-1"></i>
-              Select "Paid" option to enable price filtering
-            </small>
-          </div>
-        )}
-
-        <div className={`${!isPaidSelected ? 'opacity-50' : ''}`}>
+        <div>
           {/* Price Range Display */}
           <div className="d-flex justify-content-between align-items-center mb-3">
             <span className="text-primary fw-bold">${localRange.min}</span>
@@ -94,7 +77,6 @@ export const PriceInput: React.FC<PriceInputProps> = ({ className = '' }) => {
                   max={localRange.max}
                   value={localRange.min}
                   onChange={handleMinInputChange}
-                  disabled={!isPaidSelected}
                   placeholder="0"
                   aria-label="Minimum price"
                   id="min-price-input"
@@ -119,7 +101,6 @@ export const PriceInput: React.FC<PriceInputProps> = ({ className = '' }) => {
                   max={FILTER_CONSTANTS.PRICE_RANGE.MAX}
                   value={localRange.max}
                   onChange={handleMaxInputChange}
-                  disabled={!isPaidSelected}
                   placeholder="999"
                   aria-label="Maximum price"
                   id="max-price-input"
@@ -129,7 +110,7 @@ export const PriceInput: React.FC<PriceInputProps> = ({ className = '' }) => {
           </div>
 
           {/* Active filtering indicator */}
-          {isPaidSelected && (localRange.min > 0 || localRange.max < 999) && (
+          {(localRange.min > 0 || localRange.max < 1000) && (
             <div className="mt-3 text-center">
               <small className="text-muted">
                 <i className="bi bi-funnel me-1"></i>

@@ -4,7 +4,7 @@ import { Product } from './product.types';
  * API endpoints configuration
  */
 export const API_ENDPOINTS = {
-  PRODUCTS: 'https://closet-recruiting-api.azurewebsites.net/api/data',
+  PRODUCTS: 'https://fakestoreapi.com/products',
 } as const;
 
 /**

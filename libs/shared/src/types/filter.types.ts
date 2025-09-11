@@ -13,9 +13,11 @@ export interface PriceRange {
  */
 export interface FilterState {
   pricingOptions: PricingOption[];
+  categories: string[];
   searchQuery: string;
   sortBy: SortOption;
   priceRange: PriceRange;
+  minRating: number;
   isActive: boolean; // Whether any filters are currently applied
 }
 
@@ -24,9 +26,11 @@ export interface FilterState {
  */
 export interface FilterActions {
   setPricingOptions: (options: PricingOption[]) => void;
+  setCategories: (categories: string[]) => void;
   setSearchQuery: (query: string) => void;
   setSortBy: (sortBy: SortOption) => void;
   setPriceRange: (range: PriceRange) => void;
+  setMinRating: (rating: number) => void;
   resetFilters: () => void;
   clearSearch: () => void;
 }
@@ -37,16 +41,17 @@ export interface FilterActions {
 export const FILTER_CONSTANTS = {
   PRICE_RANGE: {
     MIN: 0,
-    MAX: 999,
-    STEP: 1,
+    MAX: 1000,
+    STEP: 5,
+  },
+  RATING: {
+    MIN: 0,
+    MAX: 5,
+    STEP: 0.5,
   },
   SEARCH: {
     DEBOUNCE_MS: 300,
     MIN_CHARACTERS: 0,
   },
-  PRICING_OPTIONS: [
-    PricingOption.PAID,
-    PricingOption.FREE,
-    PricingOption.VIEW_ONLY,
-  ],
+  CATEGORIES: ["men's clothing", "women's clothing", 'electronics', 'jewelery'],
 } as const;

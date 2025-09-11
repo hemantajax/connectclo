@@ -1,18 +1,13 @@
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '@connectstore/shared';
+import { FILTER_CONSTANTS } from '@connectstore/shared';
 import {
-  PricingOption,
-  getPricingOptionLabel,
-  FILTER_CONSTANTS,
-  // clamp,
-} from '@connectstore/shared';
-import {
-  togglePricingOption,
+  toggleCategory,
+  setMinRating,
   resetFilters,
-  selectPricingOptions,
+  selectCategories,
+  selectMinRating,
   selectIsFiltersActive,
-  // setPriceRange,
-  // selectPriceRange,
 } from '@connectstore/store';
 
 interface ContentsFilterProps {
@@ -25,25 +20,28 @@ export const ContentsFilter: React.FC<ContentsFilterProps> = ({
   variant = 'default',
 }) => {
   const dispatch = useAppDispatch();
-  const selectedOptions = useAppSelector(selectPricingOptions);
+  const selectedCategories = useAppSelector(selectCategories);
+  const minRating = useAppSelector(selectMinRating);
   const hasActiveFilters = useAppSelector(selectIsFiltersActive);
-  // const priceRange = useAppSelector(selectPriceRange);
 
-  // const [localRange, setLocalRange] = useState(priceRange);
+  const handleCategoryToggle = (category: string) => {
+    dispatch(toggleCategory(category));
+  };
 
-  // Check if Paid option is selected to enable/disable slider
-  // const isPaidSelected = selectedOptions.includes(PricingOption.PAID);
-
-  // useEffect(() => {
-  //   setLocalRange(priceRange);
-  // }, [priceRange]);
-
-  const handleOptionToggle = (option: PricingOption) => {
-    dispatch(togglePricingOption(option));
+  const handleRatingChange = (rating: number) => {
+    dispatch(setMinRating(rating));
   };
 
   const handleReset = () => {
     dispatch(resetFilters());
+  };
+
+  // Helper function to format category names for display
+  const formatCategoryName = (category: string) => {
+    return category
+      .split(' ')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
   };
 
   // const handleMinChange = (value: number) => {
@@ -71,35 +69,37 @@ export const ContentsFilter: React.FC<ContentsFilterProps> = ({
   if (variant === 'info-only') {
     return (
       <div className={`filter-info-banner ${className}`}>
-        <div className="d-flex align-items-center justify-content-between w-100">
+        <div className="d-flex align-items-center justify-content-between w-100 flex-wrap gap-3">
+          {/* Categories */}
           <div className="d-flex align-items-center">
-            <span className="text-light me-4">Pricing Option</span>
-            <div className="d-flex align-items-center gap-4">
-              {FILTER_CONSTANTS.PRICING_OPTIONS.map((option) => {
-                const isSelected = selectedOptions.includes(option);
+            <span className="text-light me-3">Category:</span>
+            <div className="d-flex align-items-center gap-3">
+              {FILTER_CONSTANTS.CATEGORIES.map((category) => {
+                const isSelected = selectedCategories.includes(category);
                 return (
                   <div
-                    key={option}
+                    key={category}
                     className="form-check form-check-inline mb-0"
                   >
                     <input
                       className="form-check-input me-2"
                       type="checkbox"
-                      id={`info-pricing-${option}`}
+                      id={`info-category-${category}`}
                       checked={isSelected}
-                      onChange={() => handleOptionToggle(option)}
+                      onChange={() => handleCategoryToggle(category)}
                     />
                     <label
                       className="form-check-label text-light"
-                      htmlFor={`info-pricing-${option}`}
+                      htmlFor={`info-category-${category}`}
                     >
-                      {getPricingOptionLabel(option)}
+                      {formatCategoryName(category)}
                     </label>
                   </div>
                 );
               })}
             </div>
           </div>
+
           {hasActiveFilters && (
             <button
               type="button"
@@ -120,7 +120,7 @@ export const ContentsFilter: React.FC<ContentsFilterProps> = ({
         <div className="d-flex justify-content-between align-items-center mb-3">
           <h6 className="card-title text-primary mb-0">
             <i className="bi bi-funnel me-2"></i>
-            Contents Filter
+            Product Filters
           </h6>
           {hasActiveFilters && (
             <button
@@ -134,29 +134,50 @@ export const ContentsFilter: React.FC<ContentsFilterProps> = ({
           )}
         </div>
 
+        {/* Categories */}
         <div className="mb-3">
-          <label className="form-label text-light small">Pricing Option</label>
+          <label className="form-label text-light small">Category</label>
           <div className="d-flex flex-column gap-2">
-            {FILTER_CONSTANTS.PRICING_OPTIONS.map((option) => {
-              const isSelected = selectedOptions.includes(option);
+            {FILTER_CONSTANTS.CATEGORIES.map((category) => {
+              const isSelected = selectedCategories.includes(category);
               return (
-                <div key={option} className="form-check">
+                <div key={category} className="form-check">
                   <input
                     className="form-check-input"
                     type="checkbox"
-                    id={`pricing-${option}`}
+                    id={`category-${category}`}
                     checked={isSelected}
-                    onChange={() => handleOptionToggle(option)}
+                    onChange={() => handleCategoryToggle(category)}
                   />
                   <label
                     className="form-check-label text-light"
-                    htmlFor={`pricing-${option}`}
+                    htmlFor={`category-${category}`}
                   >
-                    {getPricingOptionLabel(option)}
+                    {formatCategoryName(category)}
                   </label>
                 </div>
               );
             })}
+          </div>
+        </div>
+
+        {/* Rating Filter */}
+        <div className="mb-3">
+          <label className="form-label text-light small">
+            Minimum Rating: {minRating > 0 ? `${minRating}+ stars` : 'Any'}
+          </label>
+          <input
+            type="range"
+            className="form-range"
+            min={FILTER_CONSTANTS.RATING.MIN}
+            max={FILTER_CONSTANTS.RATING.MAX}
+            step={FILTER_CONSTANTS.RATING.STEP}
+            value={minRating}
+            onChange={(e) => handleRatingChange(Number(e.target.value))}
+          />
+          <div className="d-flex justify-content-between text-muted small">
+            <span>Any</span>
+            <span>5 stars</span>
           </div>
         </div>
       </div>

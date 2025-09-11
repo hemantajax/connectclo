@@ -1,7 +1,10 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { RootState } from '../store';
 import { productsApi } from '../api/productsApi';
-import { filterProducts, sortProducts } from '@connectstore/shared';
+import {
+  filterProducts,
+  sortProducts,
+  PricingOption,
+} from '@connectstore/shared';
 import { selectAllFilters, selectSortBy } from './filtersSelectors';
 
 // RTK Query selectors
@@ -54,7 +57,6 @@ export const selectPricingStats = createSelector(
       total: products.length,
       paid: 0,
       free: 0,
-      viewOnly: 0,
       priceRange: { min: 0, max: 0 },
     };
 
@@ -62,17 +64,14 @@ export const selectPricingStats = createSelector(
 
     products.forEach((product) => {
       switch (product.pricingOption) {
-        case 'PAID':
+        case PricingOption.PAID:
           stats.paid++;
           if (product.price !== undefined) {
             prices.push(product.price);
           }
           break;
-        case 'FREE':
+        case PricingOption.FREE:
           stats.free++;
-          break;
-        case 'VIEW_ONLY':
-          stats.viewOnly++;
           break;
       }
     });

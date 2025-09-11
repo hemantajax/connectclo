@@ -10,25 +10,27 @@ export const filterProducts = (
 ): Product[] => {
   let filtered = [...products];
 
-  // Apply pricing options filter
-  if (filters.pricingOptions.length > 0) {
+  // Apply category filter
+  if (filters.categories.length > 0) {
     filtered = filtered.filter((product) =>
-      filters.pricingOptions.includes(product.pricingOption)
+      filters.categories.includes(product.category)
     );
   }
 
-  // Apply search filter
+  // Apply search filter (search in title, category, and description)
   if (filters.searchQuery.trim()) {
     const query = filters.searchQuery.toLowerCase().trim();
     filtered = filtered.filter(
       (product) =>
         product.title.toLowerCase().includes(query) ||
+        product.category.toLowerCase().includes(query) ||
+        product.description.toLowerCase().includes(query) ||
         product.creator.toLowerCase().includes(query)
     );
   }
 
   // Apply price range filter (only for PAID items)
-  if (filters.priceRange.min > 0 || filters.priceRange.max < 999) {
+  if (filters.priceRange.min > 0 || filters.priceRange.max < 1000) {
     filtered = filtered.filter((product) => {
       if (product.pricingOption !== PricingOption.PAID) return true;
       return (
@@ -36,6 +38,13 @@ export const filterProducts = (
         product.price <= filters.priceRange.max
       );
     });
+  }
+
+  // Apply rating filter
+  if (filters.minRating > 0) {
+    filtered = filtered.filter(
+      (product) => product.rating.rate >= filters.minRating
+    );
   }
 
   return filtered;
@@ -64,6 +73,16 @@ export const sortProducts = (
         return a.price - b.price; // Ascending order
       });
 
+    case SortOption.HIGHEST_RATED:
+      return sorted.sort((a, b) => {
+        return b.rating.rate - a.rating.rate; // Descending order by rating
+      });
+
+    case SortOption.MOST_REVIEWS:
+      return sorted.sort((a, b) => {
+        return b.rating.count - a.rating.count; // Descending order by review count
+      });
+
     default:
       // Default to ITEM_NAME sorting if invalid option
       return sorted.sort((a, b) => a.title.localeCompare(b.title));
@@ -75,10 +94,11 @@ export const sortProducts = (
  */
 export const hasActiveFilters = (filters: FilterState): boolean => {
   return (
-    filters.pricingOptions.length > 0 ||
+    filters.categories.length > 0 ||
     filters.searchQuery.trim().length > 0 ||
     filters.priceRange.min > 0 ||
-    filters.priceRange.max < 999 ||
+    filters.priceRange.max < 1000 ||
+    filters.minRating > 0 ||
     filters.sortBy !== SortOption.ITEM_NAME
   );
 };
@@ -88,8 +108,10 @@ export const hasActiveFilters = (filters: FilterState): boolean => {
  */
 export const getDefaultFilterState = (): FilterState => ({
   pricingOptions: [],
+  categories: [],
   searchQuery: '',
   sortBy: SortOption.ITEM_NAME,
-  priceRange: { min: 0, max: 999 },
+  priceRange: { min: 0, max: 1000 },
+  minRating: 0,
   isActive: false,
 });

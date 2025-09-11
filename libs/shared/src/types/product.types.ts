@@ -9,30 +9,37 @@ export enum PricingOption {
 }
 
 /**
- * Product interface based on the actual API structure
+ * Product interface based on the Fake Store API structure
  */
 export interface Product {
   id: string;
   title: string;
-  creator: string; // API uses 'creator' instead of 'userName'
+  creator: string; // Derived from category for display
   pricingOption: PricingOption;
-  price: number; // API always includes price
-  imagePath: string; // API uses 'imagePath' instead of 'imageUrl'
-  description?: string;
-  createdAt?: string;
-  updatedAt?: string;
+  price: number;
+  imagePath: string; // Mapped from 'image'
+  description: string;
+  category: string;
+  rating: {
+    rate: number;
+    count: number;
+  };
 }
 
 /**
- * Raw API response interface (before transformation)
+ * Raw API response interface (before transformation) - Fake Store API
  */
 export interface ApiProduct {
-  id: string;
+  id: number;
   title: string;
-  creator: string;
-  pricingOption: number; // API returns numbers
   price: number;
-  imagePath: string;
+  description: string;
+  category: string;
+  image: string;
+  rating: {
+    rate: number;
+    count: number;
+  };
 }
 
 /**
@@ -42,6 +49,8 @@ export enum SortOption {
   ITEM_NAME = 'ITEM_NAME', // Default
   HIGHER_PRICE = 'HIGHER_PRICE',
   LOWER_PRICE = 'LOWER_PRICE',
+  HIGHEST_RATED = 'HIGHEST_RATED',
+  MOST_REVIEWS = 'MOST_REVIEWS',
 }
 
 /**

@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   FilterState,
-  PricingOption,
   SortOption,
   PriceRange,
   getDefaultFilterState,
@@ -18,8 +17,8 @@ const filtersSlice = createSlice({
   name: 'filters',
   initialState,
   reducers: {
-    setPricingOptions: (state, action: PayloadAction<PricingOption[]>) => {
-      state.pricingOptions = action.payload;
+    setCategories: (state, action: PayloadAction<string[]>) => {
+      state.categories = action.payload;
       state.isActive = hasActiveFilters(state);
     },
 
@@ -38,12 +37,18 @@ const filtersSlice = createSlice({
       state.isActive = hasActiveFilters(state);
     },
 
+    setMinRating: (state, action: PayloadAction<number>) => {
+      state.minRating = action.payload;
+      state.isActive = hasActiveFilters(state);
+    },
+
     resetFilters: (state) => {
       const defaultState = getDefaultFilterState();
-      state.pricingOptions = defaultState.pricingOptions;
+      state.categories = defaultState.categories;
       state.searchQuery = defaultState.searchQuery;
       state.sortBy = defaultState.sortBy;
       state.priceRange = defaultState.priceRange;
+      state.minRating = defaultState.minRating;
       state.isActive = false;
     },
 
@@ -52,14 +57,14 @@ const filtersSlice = createSlice({
       state.isActive = hasActiveFilters(state);
     },
 
-    togglePricingOption: (state, action: PayloadAction<PricingOption>) => {
-      const option = action.payload;
-      const index = state.pricingOptions.indexOf(option);
+    toggleCategory: (state, action: PayloadAction<string>) => {
+      const category = action.payload;
+      const index = state.categories.indexOf(category);
 
       if (index > -1) {
-        state.pricingOptions.splice(index, 1);
+        state.categories.splice(index, 1);
       } else {
-        state.pricingOptions.push(option);
+        state.categories.push(category);
       }
 
       state.isActive = hasActiveFilters(state);
@@ -69,13 +74,14 @@ const filtersSlice = createSlice({
 
 // Export actions
 export const {
-  setPricingOptions,
+  setCategories,
   setSearchQuery,
   setSortBy,
   setPriceRange,
+  setMinRating,
   resetFilters,
   clearSearch,
-  togglePricingOption,
+  toggleCategory,
 } = filtersSlice.actions;
 
 // Export reducer

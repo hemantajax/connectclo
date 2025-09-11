@@ -40,18 +40,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         <div className="position-absolute top-0 end-0 m-2">
           <span
             className={`badge ${
-              product.pricingOption === 1
-                ? 'bg-success'
-                : product.pricingOption === 0
-                ? 'bg-primary'
-                : 'bg-secondary'
+              product.pricingOption === 1 ? 'bg-success' : 'bg-primary'
             }`}
           >
-            {product.pricingOption === 2
-              ? 'View Only'
-              : product.pricingOption === 1
-              ? 'PAID'
-              : 'FREE'}
+            {product.pricingOption === 1 ? 'PAID' : 'FREE'}
           </span>
         </div>
       </div>
@@ -65,10 +57,16 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             : product.title}
         </h6>
 
-        {/* Creator Name */}
+        {/* Creator Name & Category */}
+        <p className="card-text text-muted small mb-1">
+          <i className="bi bi-tag me-1"></i>
+          {product.category}
+        </p>
+
+        {/* Rating */}
         <p className="card-text text-muted small mb-2">
-          <i className="bi bi-person me-1"></i>
-          By: {product.creator}
+          <i className="bi bi-star-fill text-warning me-1"></i>
+          {product.rating.rate.toFixed(1)} ({product.rating.count} reviews)
         </p>
 
         {/* Price Display */}
@@ -76,11 +74,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           <div className="d-flex justify-content-between align-items-center">
             <span
               className={`fw-bold ${
-                product.pricingOption === 1
-                  ? 'text-success'
-                  : product.pricingOption === 0
-                  ? 'text-primary'
-                  : 'text-muted'
+                product.pricingOption === 1 ? 'text-success' : 'text-primary'
               }`}
             >
               {displayPrice}
@@ -89,19 +83,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             {/* Action Button */}
             <button
               className={`btn btn-sm ${
-                product.pricingOption === 1
-                  ? 'btn-success'
-                  : product.pricingOption === 0
-                  ? 'btn-primary'
-                  : 'btn-outline-secondary'
+                product.pricingOption === 1 ? 'btn-success' : 'btn-primary'
               }`}
-              disabled={product.pricingOption === 2}
             >
-              {product.pricingOption === 1
-                ? 'Buy Now'
-                : product.pricingOption === 0
-                ? 'Get Free'
-                : 'View Only'}
+              {product.pricingOption === 1 ? 'Buy Now' : 'Get Free'}
             </button>
           </div>
         </div>
