@@ -74,7 +74,7 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
   const renderLoadingSkeleton = () => (
     <>
       {Array.from({ length: 8 }).map((_, index) => (
-        <div key={`skeleton-${index}`} className={getGridClasses()}>
+        <div key={`skeleton-${index}`} className={`${getGridClasses()} mb-4`}>
           <div className="card card-dark h-100">
             <div
               className="bg-secondary rounded-top"
@@ -136,7 +136,7 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
                     product,
                     virtualRow.index * itemsPerRow + colIndex
                   )}
-                  className={getGridClasses()}
+                  className={`${getGridClasses()} mb-4`}
                 >
                   <ProductCard
                     product={product}
@@ -164,7 +164,7 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
           : products.map((product, index) => (
               <div
                 key={getProductKey(product, index)}
-                className={getGridClasses()}
+                className={`${getGridClasses()} mb-4`}
               >
                 <ProductCard
                   product={product}

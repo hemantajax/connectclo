@@ -22,11 +22,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         <LazyImage
           src={product.imagePath}
           alt={product.title}
-          width={300}
+          width={400}
           height={200}
-          className="card-img-top"
+          className="card-img-top w-100"
           style={{
             height: '200px',
+            width: '100%',
             objectFit: 'cover',
             transition: 'transform 0.3s ease',
           }}
@@ -35,17 +36,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           rootMargin="100px" // Start loading when within 100px of viewport
           threshold={0.1}
         />
-
-        {/* Pricing Badge */}
-        <div className="position-absolute top-0 end-0 m-2">
-          <span
-            className={`badge ${
-              product.pricingOption === 1 ? 'bg-success' : 'bg-primary'
-            }`}
-          >
-            {product.pricingOption === 1 ? 'PAID' : 'FREE'}
-          </span>
-        </div>
       </div>
 
       {/* Card Body */}
@@ -72,22 +62,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         {/* Price Display */}
         <div className="mt-auto">
           <div className="d-flex justify-content-between align-items-center">
-            <span
-              className={`fw-bold ${
-                product.pricingOption === 1 ? 'text-success' : 'text-primary'
-              }`}
-            >
-              {displayPrice}
-            </span>
+            <span className="fw-bold text-success">{displayPrice}</span>
 
             {/* Action Button */}
-            <button
-              className={`btn btn-sm ${
-                product.pricingOption === 1 ? 'btn-success' : 'btn-primary'
-              }`}
-            >
-              {product.pricingOption === 1 ? 'Buy Now' : 'Get Free'}
-            </button>
+            <button className="btn btn-sm btn-success">Buy Now</button>
           </div>
         </div>
       </div>

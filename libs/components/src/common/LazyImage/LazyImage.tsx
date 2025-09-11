@@ -101,7 +101,6 @@ export const LazyImage: React.FC<LazyImageProps> = ({
       <div
         className={`d-flex align-items-center justify-content-center bg-secondary ${className}`}
         style={{
-          width,
           height,
           ...style,
         }}
@@ -112,7 +111,7 @@ export const LazyImage: React.FC<LazyImageProps> = ({
   }
 
   return (
-    <div className="position-relative" style={{ width, height }}>
+    <div className="position-relative" style={{ height }}>
       <img
         ref={imgRef}
         src={

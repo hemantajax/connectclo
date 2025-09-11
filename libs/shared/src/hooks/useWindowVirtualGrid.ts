@@ -44,7 +44,11 @@ export function useWindowVirtualGrid<T>({
     return result;
   }, [items, itemsPerRow]);
 
-  const totalHeight = rows.length * estimatedRowHeight;
+  // Bootstrap g-4 provides 1.5rem (24px) gap, we need to account for this in total height
+  const gutterSize = 24; // 1.5rem in pixels
+  const totalHeight =
+    rows.length * estimatedRowHeight +
+    Math.max(0, rows.length - 1) * gutterSize;
 
   // Update viewport and container position
   const updateScrollPosition = useCallback(() => {
@@ -86,14 +90,18 @@ export function useWindowVirtualGrid<T>({
   const virtualRows = useMemo(() => {
     if (!enabled || rows.length === 0) return [];
 
+    // Bootstrap g-4 provides 1.5rem (24px) gap between rows
+    const gutterSize = 24; // 1.5rem in pixels
+    const rowHeightWithGutter = estimatedRowHeight + gutterSize;
+
     const containerScrollTop = Math.max(0, scrollTop - containerTop);
     const startIndex = Math.max(
       0,
-      Math.floor(containerScrollTop / estimatedRowHeight) - overscan
+      Math.floor(containerScrollTop / rowHeightWithGutter) - overscan
     );
     const endIndex = Math.min(
       rows.length - 1,
-      Math.ceil((containerScrollTop + viewportHeight) / estimatedRowHeight) +
+      Math.ceil((containerScrollTop + viewportHeight) / rowHeightWithGutter) +
         overscan
     );
 
@@ -109,7 +117,7 @@ export function useWindowVirtualGrid<T>({
             left: 0,
             width: '100%',
             height: `${estimatedRowHeight}px`,
-            transform: `translateY(${i * estimatedRowHeight}px)`,
+            transform: `translateY(${i * rowHeightWithGutter}px)`,
           },
         });
       }
