@@ -1,6 +1,5 @@
 import {
   Header,
-  SearchSection,
   ContentsFilter,
   ProductsContainer,
   PWAUpdatePrompt,
@@ -26,12 +25,10 @@ export function App() {
       <Header />
 
       <div className="min-vh-100 bg-dark fixed-header-padding">
-        {/* Search Section */}
-        <section aria-label="Search and filters">
-          <SearchSection />
-
+        {/* Search and filters section */}
+        <section aria-label="Filters">
           {/* Contents Filter Info Banner - Full Width */}
-          <div className="container-fluid px-4 pb-3">
+          <div className="container-fluid px-4 pb-3 pt-3">
             <ContentsFilter variant="info-only" />
           </div>
         </section>

@@ -29,10 +29,10 @@ export const ProductsContainer: React.FC<ProductsContainerProps> = ({
       {/* Header with Results Info and Sorting */}
       <div className="d-flex justify-content-between align-items-center mb-3">
         <div className="d-flex align-items-center">
-          <h6 className="text-primary mb-0 me-3">
+          <h2 className="text-primary mb-0 me-3 h6">
             <i className="bi bi-grid me-2"></i>
             Contents List
-          </h6>
+          </h2>
 
           {/* Results Count Badge */}
           {!isLoading && !error && (

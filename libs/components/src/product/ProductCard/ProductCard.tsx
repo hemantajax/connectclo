@@ -41,11 +41,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       {/* Card Body */}
       <div className="card-body d-flex flex-column">
         {/* Product Title */}
-        <h6 className="card-title text-primary mb-2" title={product.title}>
+        <h3 className="card-title text-primary mb-2 h6" title={product.title}>
           {product.title.length > 50
             ? `${product.title.substring(0, 50)}...`
             : product.title}
-        </h6>
+        </h3>
 
         {/* Creator Name & Category */}
         <p className="card-text text-muted small mb-1">
